@@ -24,7 +24,7 @@ public class IngredienteDAO implements IDAO{
     private  DatabaseConnection database;
 
     @Override
-    public void create(Entity e) {
+    public boolean create(Entity e) {
        String query = "Insert INTO ingredienti (nome, senza_glutine, vegano, vegetariano) VALUES (?,?,?,?)";
        PreparedStatement ps = null;
        try {
@@ -37,15 +37,18 @@ public class IngredienteDAO implements IDAO{
         ps.executeUpdate();
        } catch (SQLException exc) {
         System.out.println("Errore nell'inserimento ingrediente: " + exc.getMessage());
+        return false;
        } catch (ClassCastException exc) {
         System.out.println("Errore tipo dato erraro in ricettaDAO");
-       } finally {
+        return false;
+           } finally {
             try {
                 ps.close();
             } catch (Exception exc) {
                 System.out.println("Errore chiusura prepared Statement");
             }
        }
+       return true;
     }
 
     @Override
@@ -84,7 +87,7 @@ public class IngredienteDAO implements IDAO{
     }
 
     @Override
-    public void update(Entity e) {
+    public boolean update(Entity e) {
         String query = "UPDATE ingredienti SET nome =?, senza_glutine =?, vegano =?, vegetariano =? WHERE id =?";
         PreparedStatement ps = null;
 
@@ -99,8 +102,10 @@ public class IngredienteDAO implements IDAO{
             ps.executeUpdate();
         } catch (SQLException exc) {
            System.out.println("Errore aggionamento Ingrediente" + exc.getMessage());
+           return false;
         } catch (ClassCastException exc) {
             System.out.println("Errore tipo dato errato in IngredienteDAO");
+            return false;
         } finally {
             try {
                 ps.close();
@@ -108,11 +113,11 @@ public class IngredienteDAO implements IDAO{
                 System.out.println("Errore chiusura prepared Statement");
             }
         }
-  
+    return true;
     }
 
     @Override
-    public void delete(int id) {
+    public boolean delete(int id) {
         String query = "DELETE FROM ingredienti WHERE id=?";
         PreparedStatement ps = null;
   
@@ -122,13 +127,51 @@ public class IngredienteDAO implements IDAO{
               ps.executeUpdate();
           } catch (SQLException exc) {
               System.out.println("Errore cancellazione ricetta" + exc.getMessage());
+              return false;
           } finally {
               try {
               ps.close();
               } catch (Exception exc) {
               System.out.println("Errore chiusura prepared Statement");
           }
-          }    
+          }  
+          return true;  
+    }
+
+    @Override
+    public Entity readById(int id) {
+        String query = "SELECT * FROM ingredienti WHERE id=?";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Entity result = null;
+
+        try {
+            ps = database.getConnection().prepareStatement(query);
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+
+            while(rs.next())    {
+                Map<String, String> params = new HashMap<>();
+                params.put("id", rs.getInt(1)+"");
+                params.put("nome", rs.getString(2));
+                params.put("senza_glutine", rs.getBoolean(3)+"");
+                params.put("vegano", rs.getBoolean(4)+"");
+                params.put("vegetariano", rs.getBoolean(5)+"");
+
+               
+                result = context.getBean(Ingrediente.class, params);
+            }
+        } catch (SQLException exc) {
+            System.out.println("Errore nella select in InregdienteDAO");
+        } finally {
+            try {
+                ps.close();
+                rs.close();
+            } catch (Exception exc) {
+                System.out.println("Errore chiusura prepared Statement");
+            }
+        }
+        return result;
     }
     
 }
