@@ -16,6 +16,10 @@ public class Utente extends Entity{
         this.ruolo = ruolo;
     }
 
+    public Utente(int id) {
+        super(id);
+    }
+
     public String getNome() {
         return nome;
     }
