@@ -6,12 +6,14 @@ import com.NoWaste.NoWaste.entities.Entity;
 
 public interface IDAO {
 
-    public void create(Entity e);
+    public boolean create(Entity e);
 
     public Map<Integer, Entity> read();
 
-    public void update(Entity e);
+    public boolean update(Entity e);
 
-    public void delete(int id);
+    public boolean delete(int id);
+
+    public Entity readById(int id);
     
 }
