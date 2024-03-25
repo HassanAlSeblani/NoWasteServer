@@ -3,7 +3,9 @@ package com.NoWaste.NoWaste.DAO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,7 +95,7 @@ public class CommentoDAO implements IDAO{
 
     @Override
     public boolean update(Entity e) {
-        String query = "UPDATE commento SET punteggio=?, commento=?, id_utente=?, id_ricette=?";
+        String query = "UPDATE commenti SET punteggio=?, commento=?, id_utente=?, id_ricette=?";
         PreparedStatement ps = null;
         try{
             Commento c = (Commento)e;
@@ -181,6 +183,84 @@ public class CommentoDAO implements IDAO{
         return result;
     }
 
+    //-----
+
+    public List<Commento> getCommentoByUser(int userId){
+        String query = "SELECT id FROM commenti WHERE id_utente = ?";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<Commento> commenti = new ArrayList<>();
+
+        try {
+            ps = database.getConnection().prepareStatement(query);
+            ps.setInt(1, userId);
+            rs = ps.executeQuery();
+
+            while(rs.next()){
+                Map<String, String> params = new HashMap<>();
+                params.put("id", rs.getInt(1)+"");
+                params.put("punteggio", rs.getInt(2)+"");
+                params.put("commento", rs.getString(3));
+                params.put("id_utente", rs.getInt(4)+"");
+                params.put("id_ricetta", rs.getInt(5)+"");
+                
+                Commento c = context.getBean(Commento.class, params);
+                commenti.add(c);
+            }
+
+        } catch (SQLException exc) {
+            System.out.println("Errore nella query per i commenti dell'utente: " + exc.getMessage());
+
+        }finally{
+            try {
+                ps.close();
+                rs.close();
+            } catch (Exception exc) {
+                System.out.println("Errore chiusura prepared Statement");
+            }
+        }
+        return commenti;
     }
+
+
+
+    public List<Commento> getCommentoByRecipe(int recipeId){
+
+        String query = "SELECT * FROM commenti WHERE id_ricetta = ?";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<Commento> commenti = new ArrayList<>();
+        try {
+            ps = database.getConnection().prepareStatement(query);
+            ps.setInt(1, recipeId);
+            rs = ps.executeQuery();
+
+            while(rs.next()){
+                Map<String, String> params = new HashMap<>();
+                params.put("id", rs.getInt(1)+"");
+                params.put("punteggio", rs.getInt(2)+"");
+                params.put("commento", rs.getString(3));
+                params.put("id_utente", rs.getInt(4)+"");
+                params.put("id_ricetta", rs.getInt(5)+"");
+                
+                Commento c = context.getBean(Commento.class, params);
+                commenti.add(c);
+        }
+
+        }catch (SQLException exc){
+            System.out.println("Errore nella query per i commenti della ricetta: " + exc.getMessage());
+
+        }finally{
+            try {
+                ps.close();
+                rs.close();
+            } catch (Exception exc) {
+                System.out.println("Errore chiusura prepared Statement");
+            }
+        }
+        return commenti;
+    }
+
+}
     
 
