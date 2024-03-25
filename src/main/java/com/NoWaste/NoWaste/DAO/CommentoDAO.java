@@ -129,6 +129,8 @@ public class CommentoDAO implements IDAO{
             ps.close();
             } catch (Exception exc) {
             System.out.println("Errore chiusura prepared Statement");
+
+            
         }
         }    
     }
