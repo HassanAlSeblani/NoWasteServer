@@ -24,7 +24,7 @@ public class UtenteDAO implements IDAO{
 
     @Override
     public boolean create(Entity e) {
-        String query = "INSERT INTO Utente (nome, cognome, user, `password`, ruolo) VALUES (?,?,?,?,?)";
+        String query = "INSERT INTO Utenti (nome, cognome, user, `password`, ruolo) VALUES (?,?,?,?,?)";
         PreparedStatement ps = null;
 
         try {
@@ -55,7 +55,7 @@ public class UtenteDAO implements IDAO{
 
     @Override
     public Map<Integer, Entity> read() {
-        String query = "SELECT * FROM Utente";
+        String query = "SELECT * FROM Utenti";
         PreparedStatement ps = null;
         ResultSet rs = null;
         Map <Integer, Entity> result = new HashMap<>();
@@ -92,7 +92,7 @@ public class UtenteDAO implements IDAO{
 
     @Override
     public boolean update(Entity e) {
-        String query = "UPDATE Utente SET nome =?, cognome =?, user =?, `password` =?, ruolo =? WHERE id =?";
+        String query = "UPDATE Utenti SET nome =?, cognome =?, user =?, `password` =?, ruolo =? WHERE id =?";
         PreparedStatement ps = null;
 
         try {
@@ -123,7 +123,7 @@ public class UtenteDAO implements IDAO{
 
     @Override
     public boolean delete(int id) {
-        String query = "DELETE FROM Utente WHERE id =?";
+        String query = "DELETE FROM Utenti WHERE id =?";
         PreparedStatement ps = null;
 
         try {
@@ -147,7 +147,7 @@ public class UtenteDAO implements IDAO{
 
     @Override
     public Entity readById(int id) {
-        String query = "SELECT * FROM Utente WHERE id =?";
+        String query = "SELECT * FROM Utenti WHERE id =?";
         PreparedStatement ps = null;
         ResultSet rs = null;
         Entity result =  null;
