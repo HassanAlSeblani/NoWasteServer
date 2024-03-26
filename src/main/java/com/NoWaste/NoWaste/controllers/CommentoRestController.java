@@ -16,19 +16,25 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.NoWaste.NoWaste.entities.Commento;
 import com.NoWaste.NoWaste.services.CommentoService;
+import com.NoWaste.NoWaste.services.LoginService;
 
 @CrossOrigin(origins = { "http://localhost:4200" })
 @RestController
 @RequestMapping("/commenti")
 public class CommentoRestController {
 
+    //controllare i token!!!
+
     @Autowired
     private CommentoService commentoService;
+
+    @Autowired
+    private LoginService loginService;
 
     @GetMapping("/commentsByUser")
     public List<Commento> getCommentiByUser(@RequestHeader("token") String token, @RequestParam("userId") int userId) {
         if (token != null) {
-            if (!token.equalsIgnoreCase("") && !token.split("-")[0].equalsIgnoreCase("NONE")) {
+            if (loginService.checkLoginUtente(token)) {
                 return commentoService.getCommentiByUser(userId);
             }
         }
@@ -40,7 +46,7 @@ public class CommentoRestController {
             @RequestParam("recipeId") int recipeId) {
 
         if (token != null) {
-            if (!token.equalsIgnoreCase("") && !token.split("-")[0].equalsIgnoreCase("NONE")) {
+            if (loginService.checkLoginUtente(token)) {
                 return commentoService.getCommentiByRecipe(recipeId);
             }
         }

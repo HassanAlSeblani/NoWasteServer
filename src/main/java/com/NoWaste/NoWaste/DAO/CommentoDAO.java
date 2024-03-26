@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.NoWaste.NoWaste.entities.Commento;
 import com.NoWaste.NoWaste.entities.Entity;
+import com.NoWaste.NoWaste.entities.Utente;
 
 @Service
 public class CommentoDAO implements IDAO{
@@ -23,6 +24,9 @@ public class CommentoDAO implements IDAO{
 
     @Autowired
     private  DatabaseConnection database;
+
+    @Autowired
+    UtenteDAO utenteDAO;
 
     @Override
     public boolean create(Entity e) {
@@ -72,13 +76,15 @@ public class CommentoDAO implements IDAO{
             while (rs.next()) {
                 Map<String, String> params = new HashMap<>();
                 params.put("id", rs.getInt(1)+"");
-                params.put("punteggio", rs.getInt(2)+"");
-                params.put("commento", rs.getString(3));
-                params.put("id_utente", rs.getInt(4)+"");
-                params.put("id_ricetta", rs.getInt(5)+"");
+                params.put("id_utente", rs.getInt(2)+"");
+                params.put("id_ricetta", rs.getInt(3)+"");
+                params.put("punteggio", rs.getInt(4)+"");
+                params.put("commento", rs.getString(5));
                 
                 Commento c = context.getBean(Commento.class, params);
                 result.put(c.getId(), c);
+                Utente utente = (Utente)utenteDAO.readById(Integer.parseInt(params.get("id_utente")));
+                c.setUtente(utente);
             }
         } catch (SQLException exc) {
             System.out.println("Errore nella select in commentoDAO");
@@ -148,7 +154,7 @@ public class CommentoDAO implements IDAO{
         String query = "SELECT * FROM commenti WHERE id=?";
         PreparedStatement ps = null;
         ResultSet rs = null;
-        Entity result = null;
+        Commento c = null;
 
         try {
           
@@ -160,15 +166,14 @@ public class CommentoDAO implements IDAO{
             while (rs.next()) {
                 Map<String, String> params = new HashMap<>();
                 params.put("id", rs.getInt(1)+"");
-                params.put("punteggio", rs.getInt(2)+"");
-                params.put("commento", rs.getString(3));
-                params.put("id_utente", rs.getInt(4)+"");
-                params.put("id_ricetta", rs.getInt(5)+"");
+                params.put("id_utente", rs.getInt(2)+"");
+                params.put("id_ricetta", rs.getInt(3)+"");
+                params.put("punteggio", rs.getInt(4)+"");
+                params.put("commento", rs.getString(5));
                 
-
-
-                
-                result = context.getBean(Commento.class, params);
+                c = context.getBean(Commento.class, params);
+                Utente utente = (Utente)utenteDAO.readById(Integer.parseInt(params.get("id_utente")));
+                c.setUtente(utente);
             }
         } catch (SQLException exc) {
             System.out.println("Errore nella select in commentoDAO");
@@ -180,13 +185,13 @@ public class CommentoDAO implements IDAO{
                 System.out.println("Errore chiusura prepared Statement");
             }
         }
-        return result;
+        return (Entity)c;
     }
 
     //-----
 
     public List<Commento> getCommentoByUser(int userId){
-        String query = "SELECT id FROM commenti WHERE id_utente = ?";
+        String query = "SELECT * FROM commenti WHERE id_utente = ?";
         PreparedStatement ps = null;
         ResultSet rs = null;
         List<Commento> commenti = new ArrayList<>();
@@ -199,12 +204,14 @@ public class CommentoDAO implements IDAO{
             while(rs.next()){
                 Map<String, String> params = new HashMap<>();
                 params.put("id", rs.getInt(1)+"");
-                params.put("punteggio", rs.getInt(2)+"");
-                params.put("commento", rs.getString(3));
-                params.put("id_utente", rs.getInt(4)+"");
-                params.put("id_ricetta", rs.getInt(5)+"");
+                params.put("id_utente", rs.getInt(2)+"");
+                params.put("id_ricetta", rs.getInt(3)+"");
+                params.put("punteggio", rs.getInt(4)+"");
+                params.put("commento", rs.getString(5));
                 
                 Commento c = context.getBean(Commento.class, params);
+                Utente utente = (Utente)utenteDAO.readById(userId);
+                c.setUtente(utente);
                 commenti.add(c);
             }
 
@@ -238,12 +245,14 @@ public class CommentoDAO implements IDAO{
             while(rs.next()){
                 Map<String, String> params = new HashMap<>();
                 params.put("id", rs.getInt(1)+"");
-                params.put("punteggio", rs.getInt(2)+"");
-                params.put("commento", rs.getString(3));
-                params.put("id_utente", rs.getInt(4)+"");
-                params.put("id_ricetta", rs.getInt(5)+"");
+                params.put("id_utente", rs.getInt(2)+"");
+                params.put("id_ricetta", rs.getInt(3)+"");
+                params.put("punteggio", rs.getInt(4)+"");
+                params.put("commento", rs.getString(5));
                 
                 Commento c = context.getBean(Commento.class, params);
+                Utente utente = (Utente)utenteDAO.readById(Integer.parseInt(params.get("id_utente")));
+                c.setUtente(utente);
                 commenti.add(c);
         }
 
