@@ -3,6 +3,7 @@ package com.NoWaste.NoWaste.controllers;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.NoWaste.NoWaste.entities.Utente;
+import com.NoWaste.NoWaste.services.LoginService;
 import com.NoWaste.NoWaste.services.UtenteService;
 
 import java.util.ArrayList;
@@ -23,36 +24,34 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 
 @CrossOrigin(origins = {"http://loclhost:4200"})
-@Controller
 @RestController
 @RequestMapping("/api/user")
 
 public class UserRestController {
     
     @Autowired
+    private LoginService loginService;
+
+    @Autowired
     private UtenteService utenteService;
     @GetMapping("/allUsers")
     public List<Utente> getAllUtenti(@RequestHeader("token") String token) {
         if(token != null) //da fare il controllo sul token
         {
-            return utenteService.getAllUtenti();
+            if(loginService.checkLogin(token))
+                return utenteService.getAllUtenti();
         }
-        else
-        {
-            return new ArrayList<Utente>();
-        }
+        return new ArrayList<Utente>();
     }
 
     @GetMapping("/userById")
     public Utente getUtenteById(@RequestHeader("token") String token, @RequestParam("id") int idUtente) {
         if(token != null) //da fare il controllo sul token
         {
-            return utenteService.getUtenteById(idUtente);
+            if(loginService.checkLogin(token))
+                return utenteService.getUtenteById(idUtente);
         }
-        else
-        {
             return new Utente(idUtente);
-        }
     }
 
     @DeleteMapping("/deleteUser")

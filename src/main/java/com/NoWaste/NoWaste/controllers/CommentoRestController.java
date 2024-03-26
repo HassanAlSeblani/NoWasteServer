@@ -57,7 +57,7 @@ public class CommentoRestController {
     public boolean deleteCommento(@RequestHeader("token") String token, @RequestParam("commentId") int commentId) {
 
         if (token != null) {
-            if (!token.equalsIgnoreCase("") && !token.split("-")[0].equalsIgnoreCase("NONE")) {
+            if (loginService.checkLoginUtente(token)) {
                 return commentoService.deleteCommento(commentId);
             }
         }
@@ -68,7 +68,7 @@ public class CommentoRestController {
     public boolean updateCommento(@RequestHeader("token") String token, @RequestBody Commento commento) {
 
         if (token != null) {
-            if (!token.equalsIgnoreCase("") && !token.split("-")[0].equalsIgnoreCase("NONE")) {
+            if (loginService.checkLoginUtente(token)) {
                 return commentoService.updateCommento(commento);
             }
         }
@@ -79,7 +79,7 @@ public class CommentoRestController {
     public List<Commento> getAllCommenti(@RequestHeader("token") String token) {
 
         if (token != null) {
-            if (!token.equalsIgnoreCase("") && !token.split("-")[0].equalsIgnoreCase("NONE")) {
+            if (loginService.checkLoginAdmin(token)) {
                 return commentoService.getAllCommenti();
             }
         }

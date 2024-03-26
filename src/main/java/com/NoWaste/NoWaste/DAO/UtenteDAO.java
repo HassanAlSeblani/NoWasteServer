@@ -106,7 +106,7 @@ public class UtenteDAO implements IDAO{
             ps.setInt(6, u.getId());
             ps.executeUpdate();
         } catch (SQLException exc) {
-           System.out.println("Errore aggiornamento Utente");
+           System.out.println("Errore aggiornamento Utente" + exc.getMessage());
            return false;
         } catch (ClassCastException exc) {
             System.out.println("Errore tipo di dato errato in utenteDAO");
