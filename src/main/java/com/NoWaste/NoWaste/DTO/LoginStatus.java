@@ -10,7 +10,7 @@ public class LoginStatus {
     public String getRuolo(){
         return token.split("-")[0];
     }
-   
+
     public int getIdUtente(){
         return Integer.parseInt(token.split("-")[1]);
     }

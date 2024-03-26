@@ -101,7 +101,7 @@ public class CommentoDAO implements IDAO{
 
     @Override
     public boolean update(Entity e) {
-        String query = "UPDATE commenti SET punteggio=?, commento=?, id_utente=?, id_ricette=?";
+        String query = "UPDATE commenti SET punteggio=?, commento=?, id_utente=?, id_ricetta=? WHERE id = ?";
         PreparedStatement ps = null;
         try{
             Commento c = (Commento)e;
@@ -110,12 +110,14 @@ public class CommentoDAO implements IDAO{
             ps.setString(2, c.getCommento());
             ps.setInt(3, c.getUtente().getId());
             ps.setInt(4, c.getIdRicetta());
+            ps.setInt(5, c.getId());
+            
             ps.executeUpdate();
         } catch (SQLException exc) {
             System.out.println("Errore aggiornamento commento" + exc.getMessage());
             return false;
         } catch (ClassCastException exc) {
-            System.out.println("Errore tipo dato erraro in commentoDAO");
+            System.out.println("Errore tipo dato errato in commentoDAO");
             return false;
         } finally {
             try {

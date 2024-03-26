@@ -64,7 +64,7 @@ public class CommentoRestController {
         return false;
     }
 
-    @PostMapping("/updateComment")
+    @PatchMapping("/updateComment")
     public boolean updateCommento(@RequestHeader("token") String token, @RequestBody Commento commento) {
 
         if (token != null) {
