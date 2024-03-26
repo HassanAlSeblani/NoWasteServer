@@ -195,7 +195,7 @@ public class RicettaDAO implements IDAO {
                 result = context.getBean(Ricetta.class, params);
 
                 List<RicettaIngrediente> ingredienti = new ArrayList<>();
-                for (Entity ricettaIngrediente : ricettaIngredienteDAO.read().values())
+                for (Entity ricettaIngrediente : ricettaIngredienteDAO.readByIdRicetta(id).values())
                     ingredienti.add((RicettaIngrediente) ricettaIngrediente);
                     ((Ricetta) result).setIngrediente(ingredienti);
 
@@ -245,7 +245,7 @@ public class RicettaDAO implements IDAO {
 
                 Ricetta r = context.getBean(Ricetta.class, params);
                 List<RicettaIngrediente> ingredienti = new ArrayList<>();
-                for (Entity ricettaIngrediente : ricettaIngredienteDAO.read().values())
+                for (Entity ricettaIngrediente : ricettaIngredienteDAO.readByIdRicetta(r.getId()).values())
                     ingredienti.add((RicettaIngrediente) ricettaIngrediente);
                     ((Ricetta) result).setIngrediente(ingredienti);
 
@@ -297,7 +297,7 @@ public class RicettaDAO implements IDAO {
                 Ricetta r = context.getBean(Ricetta.class, params);
 
                 List<RicettaIngrediente> ingredienti = new ArrayList<>();
-                for (Entity ricettaIngrediente : ricettaIngredienteDAO.read().values())
+                for (Entity ricettaIngrediente : ricettaIngredienteDAO.readByIdRicetta(r.getId()).values())
                 ingredienti.add((RicettaIngrediente) ricettaIngrediente);
                 ((Ricetta) result).setIngrediente(ingredienti);
               
@@ -352,7 +352,7 @@ public class RicettaDAO implements IDAO {
         Ricetta r = context.getBean(Ricetta.class, params);
 
         List<RicettaIngrediente> ingredienti = new ArrayList<>();
-        for (Entity ricettaIngrediente : ricettaIngredienteDAO.read().values())
+        for (Entity ricettaIngrediente : ricettaIngredienteDAO.readByIdRicetta(r.getId()).values())
         ingredienti.add((RicettaIngrediente) ricettaIngrediente);
         ((Ricetta) result).setIngrediente(ingredienti);
       

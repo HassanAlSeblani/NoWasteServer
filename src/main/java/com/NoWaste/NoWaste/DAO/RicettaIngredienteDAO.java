@@ -182,5 +182,41 @@ public class RicettaIngredienteDAO implements IDAO{
     }   
 
     //Creare metodo ReadByIDRicetta.
-    
+    public Map<Integer, Entity> readByIdRicetta(int id) {
+        String query = "SELECT * FROM ricette_ingredienti WHERE id_ricetta = ?";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Map <Integer, Entity> result = new HashMap<>();
+
+        try {
+            ps = database.getConnection().prepareStatement(query);
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Map<String, String> params = new HashMap<>();
+                params.put("id", rs.getInt(1)+"");
+                params.put("id_ricetta", rs.getInt(2)+"");
+
+                params.put("quantita", rs.getInt(4)+"");
+                params.put("unitaMisura", rs.getString(5));
+
+                RicettaIngrediente ri = context.getBean(RicettaIngrediente.class, params);
+                ri.setIngrediente((Ingrediente) ingredienteDAO.readById(rs.getInt(3)));
+                result.put(ri.getId(), ri);
+            }
+            
+        } catch (SQLException exc) {
+            System.out.println("Errore nella select in ricetteingredienteDAO");
+        } finally {
+            try {
+                ps.close();
+                rs.close();
+            } catch (Exception exc) {
+                System.out.println("Errore chiusura prepared Statement");
+            }
+        }
+       return result;
+    }
+
 }
