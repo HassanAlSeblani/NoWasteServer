@@ -28,7 +28,7 @@ public class RicettaIngredienteDAO implements IDAO{
 
     @Override
     public boolean create(Entity e) {
-        String query = "INSERT INTO ricettaingrediente (id_ricetta, id_ingrediente, quantita) VALUES (?,?,?)";
+        String query = "INSERT INTO ricette_ingredienti (id_ricetta, id_ingrediente, quantita, unita_misura) VALUES (?,?,?,?)";
         PreparedStatement ps = null;
         try {
             RicettaIngrediente ri = (RicettaIngrediente)e;
@@ -36,6 +36,7 @@ public class RicettaIngredienteDAO implements IDAO{
             ps.setInt(1, ri.getIdRicetta());
             ps.setInt(2, ri.getIngrediente().getId());
             ps.setInt(3, ri.getQuantita());
+            ps.setString(4, ri.getUnitaMisura());
             ps.executeUpdate();
             
         } catch (SQLException exc) {
@@ -56,7 +57,7 @@ public class RicettaIngredienteDAO implements IDAO{
 
     @Override
     public Map<Integer, Entity> read() {
-        String query = "SELECT * FROM ricettaingrediente";
+        String query = "SELECT * FROM ricette_ingredienti";
         PreparedStatement ps = null;
         ResultSet rs = null;
         Map <Integer, Entity> result = new HashMap<>();
@@ -69,7 +70,9 @@ public class RicettaIngredienteDAO implements IDAO{
                 Map<String, String> params = new HashMap<>();
                 params.put("id", rs.getInt(1)+"");
                 params.put("id_ricetta", rs.getInt(2)+"");
+
                 params.put("quantita", rs.getInt(4)+"");
+                params.put("unitaMisura", rs.getString(5));
 
                 RicettaIngrediente ri = context.getBean(RicettaIngrediente.class, params);
                 ri.setIngrediente((Ingrediente) ingredienteDAO.readById(rs.getInt(3)));
@@ -91,7 +94,7 @@ public class RicettaIngredienteDAO implements IDAO{
 
     @Override
     public boolean update(Entity e) {
-        String query = "UPDATE ricettaingrediente Set id_ricetta =?, id_ingrediente =?, quantita =? WHERE id =?";
+        String query = "UPDATE ricette_ingredienti Set id_ricetta =?, id_ingrediente =?, quantita =?, unita_misura =? WHERE id =?";
         PreparedStatement ps = null;
 
         try {
@@ -100,7 +103,9 @@ public class RicettaIngredienteDAO implements IDAO{
             ps.setInt(1, ri.getIdRicetta());
             ps.setInt(2, ri.getIngrediente().getId());
             ps.setInt(3, ri.getQuantita());
-            ps.setInt(4, ri.getId());
+            ps.setString(4, ri.getUnitaMisura());
+            ps.setInt(5, ri.getId());
+            
             ps.executeUpdate();
         } catch (SQLException exc) {
             System.out.println("Errore aggiornamento RicettaIngrediente" + exc.getMessage());
@@ -120,7 +125,7 @@ public class RicettaIngredienteDAO implements IDAO{
 
     @Override
     public boolean delete(int id) {
-        String query = "DELETE FROM ricetteingredienti WHERE id=?";
+        String query = "DELETE FROM ricette_ingredienti WHERE id=?";
         PreparedStatement ps = null;
   
           try {
@@ -142,7 +147,7 @@ public class RicettaIngredienteDAO implements IDAO{
 
     @Override
     public Entity readById(int id) {
-        String query = "SELECT * FROM ricettaingrediente WHERE id=?";
+        String query = "SELECT * FROM ricette_ingredienti WHERE id=?";
         PreparedStatement ps = null;
         ResultSet rs = null;
         Entity result = null;
@@ -157,6 +162,7 @@ public class RicettaIngredienteDAO implements IDAO{
                 params.put("id", rs.getInt(1)+"");
                 params.put("id_ricetta", rs.getInt(2)+"");
                 params.put("quantita", rs.getInt(4)+"");
+                params.put("unitaMisura", rs.getString(5));
 
                 result = context.getBean(RicettaIngrediente.class, params);
                 ((RicettaIngrediente) result).setIngrediente((Ingrediente) ingredienteDAO.readById(rs.getInt(3)));
@@ -174,5 +180,7 @@ public class RicettaIngredienteDAO implements IDAO{
         }
        return result;
     }   
+
+    //Creare metodo ReadByIDRicetta.
     
 }
