@@ -24,7 +24,7 @@ public class RicettaDAO implements IDAO {
 
     @Override
     public boolean create(Entity e) {
-        String query = "INSERT INTO ricette (Nome, Istruzioni, Portata, Difficolta, Tempo_preparazione, Serving) VALUES (?,?,?,?,?,?)";
+        String query = "INSERT INTO ricette (Nome, Istruzioni, Portata, Difficolta, Tempo_preparazione, Serving, link_immagine) VALUES (?,?,?,?,?,?)";
         PreparedStatement ps = null;
         try {
             Ricetta r = (Ricetta)e;
@@ -35,6 +35,7 @@ public class RicettaDAO implements IDAO {
             ps.setInt(4, r.getDifficolta());
             ps.setInt(5, r.getTempoPreparazione());
             ps.setInt(6, r.getServing());
+            ps.setString(7, r.getLinkImmagine());
             ps.executeUpdate();
 
         } catch (SQLException exc) {
@@ -74,6 +75,7 @@ public class RicettaDAO implements IDAO {
                 params.put("difficolta", rs.getInt(5)+"");
                 params.put("tempoPreparazione", rs.getInt(6)+"");
                 params.put("serving", rs.getInt(7)+"");
+                params.put("linkImmagine", rs.getString(8));
                 
                 Ricetta r = context.getBean(Ricetta.class, params);
                 result.put(r.getId(), r);
@@ -93,7 +95,7 @@ public class RicettaDAO implements IDAO {
 
     @Override
     public boolean update(Entity e) {
-        String query = "UPDATE ricetta Set nome =?, istruzioni =?, Portata=?, Difficolta=?, tempo_preparazione=?, serving=? WHERE id=?";
+        String query = "UPDATE ricetta Set nome =?, istruzioni =?, Portata=?, Difficolta=?, tempo_preparazione=?, serving=?, link_immagine =? WHERE id=?";
         PreparedStatement ps = null;
         try {
             Ricetta r = (Ricetta)e;
@@ -104,7 +106,8 @@ public class RicettaDAO implements IDAO {
             ps.setInt(4, r.getDifficolta());
             ps.setInt(5, r.getTempoPreparazione());
             ps.setInt(6, r.getServing());
-            ps.setInt(7, r.getId());    
+            ps.setString(7, r.getLinkImmagine());
+            ps.setInt(8, r.getId());    
             ps.executeUpdate();
         } catch (SQLException exc) {
             System.out.println("Eroore aggiornamento ricetta" + exc.getMessage());
@@ -166,6 +169,7 @@ public class RicettaDAO implements IDAO {
                 params.put("difficolta", rs.getInt(5)+"");
                 params.put("tempoPreparazione", rs.getInt(6)+"");
                 params.put("serving", rs.getInt(7)+"");
+                params.put("linkImmagine", rs.getString(8));
                 
                
                 result = context.getBean(Ricetta.class, params);
