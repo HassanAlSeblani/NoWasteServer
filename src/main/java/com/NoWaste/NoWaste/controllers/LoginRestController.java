@@ -29,10 +29,10 @@ public class LoginRestController {
         LoginStatus ls = new LoginStatus();
         ls.setToken ("NONE", 0);
 
-        if (u.getRuolo().equals("USER")) {
+        if (u.getRuolo().equalsIgnoreCase("USER")) {
             ls.setToken ("USER",  u.getId());     
             return ls;
-        } else if (u.getRuolo().equals("ADMIN")) {
+        } else if (u.getRuolo().equalsIgnoreCase("ADMIN")) {
             ls.setToken ("ADMIN", u.getId());
             return ls;
         } else {

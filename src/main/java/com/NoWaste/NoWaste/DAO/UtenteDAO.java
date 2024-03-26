@@ -92,7 +92,7 @@ public class UtenteDAO implements IDAO{
 
     @Override
     public boolean update(Entity e) {
-        String query = "UPDATE Utenti SET nome =?, cognome =?, user =?, `password` =?, ruolo =? WHERE id =?";
+        String query = "UPDATE Utenti SET nome =?, cognome =?, username =?, `password` =?, ruolo =? WHERE id =?";
         PreparedStatement ps = null;
 
         try {
@@ -195,8 +195,12 @@ public class UtenteDAO implements IDAO{
             rs = ps.executeQuery();   
             if (rs.next()) {
                 Map <String, String> params = new HashMap<>();
-                params.put("username", rs.getString(1));
-                params.put("password", rs.getString(2));
+                params.put("id", rs.getInt(1)+"");
+                params.put("nome", rs.getString(2));
+                params.put("cognome", rs.getString(3));
+                params.put("user", rs.getString(4));
+                params.put("password", rs.getString(5));
+                params.put("ruolo", rs.getString(6));
 
                 e = context.getBean(Utente.class, params);
             }       
