@@ -12,12 +12,13 @@ public class Ricetta extends Entity{
     private int difficolta;
     private int tempoPreparazione;
     private int serving;
+    private String linkImmagine;
     private List<RicettaIngrediente> ingrediente;
     private List<Commento> commenti;
 
     
     public Ricetta(int id, String nome, String istruzuoni, String portata, int difficolta, int tempoPreparazione,
-            int serving, List<RicettaIngrediente> ingrediente, List<Commento> commenti) {
+            int serving, String linkImmagine, List<RicettaIngrediente> ingrediente, List<Commento> commenti) {
         super(id);
         this.nome = nome;
         this.istruzuoni = istruzuoni;
@@ -25,6 +26,7 @@ public class Ricetta extends Entity{
         this.difficolta = difficolta;
         this.tempoPreparazione = tempoPreparazione;
         this.serving = serving;
+        this.linkImmagine = linkImmagine;
         this.ingrediente = ingrediente;
         this.commenti = commenti;
     }
@@ -91,6 +93,14 @@ public class Ricetta extends Entity{
 
     public void setServing(int serving) {
         this.serving = serving;
+    }
+
+    public String getLinkImmagine() {
+        return linkImmagine;
+    }
+    
+    public void setLinkImmagine(String linkImmagine) {
+        this.linkImmagine = linkImmagine;
     }
 
 
