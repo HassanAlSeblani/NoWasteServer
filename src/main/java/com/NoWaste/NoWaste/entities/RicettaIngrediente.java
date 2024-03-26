@@ -8,9 +8,9 @@ public class RicettaIngrediente extends Entity {
     private int idRicetta;
 
 
-    public RicettaIngrediente(int id, Ingrediente ingrediente, int quantita, String unitaMisura, int idRicetta) {
+    public RicettaIngrediente(int id, int quantita, String unitaMisura, int idRicetta) {
         super(id);
-        this.ingrediente = ingrediente;
+       
         this.quantita = quantita;
         this.unitaMisura = unitaMisura;
         this.idRicetta = idRicetta;

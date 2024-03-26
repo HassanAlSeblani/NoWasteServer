@@ -20,6 +20,8 @@ import com.NoWaste.NoWaste.entities.RicettaIngrediente;
 @Service
 public class RicettaDAO implements IDAO {
 
+
+
     @Autowired
     private RicettaIngredienteDAO ricettaIngredienteDAO;
 
@@ -191,6 +193,16 @@ public class RicettaDAO implements IDAO {
                 params.put("linkImmagine", rs.getString(8));
 
                 result = context.getBean(Ricetta.class, params);
+
+                List<RicettaIngrediente> ingredienti = new ArrayList<>();
+                for (Entity ricettaIngrediente : ricettaIngredienteDAO.read().values())
+                    ingredienti.add((RicettaIngrediente) ricettaIngrediente);
+                    ((Ricetta) result).setIngrediente(ingredienti);
+
+                List<Commento> commenti = commentoDAO.getCommentoByRecipe(Integer.parseInt(params.get("id")));
+                ((Ricetta) result).setCommenti(commenti);
+
+                
             }
         } catch (SQLException exc) {
             System.out.println("Errore nella select in ricettaDAO");
@@ -232,7 +244,15 @@ public class RicettaDAO implements IDAO {
                 params.put("linkImmagine", rs.getString(8));
 
                 Ricetta r = context.getBean(Ricetta.class, params);
+                List<RicettaIngrediente> ingredienti = new ArrayList<>();
+                for (Entity ricettaIngrediente : ricettaIngredienteDAO.read().values())
+                    ingredienti.add((RicettaIngrediente) ricettaIngrediente);
+                    ((Ricetta) result).setIngrediente(ingredienti);
+
+                List<Commento> commenti = commentoDAO.getCommentoByRecipe(Integer.parseInt(params.get("id")));
+                ((Ricetta) result).setCommenti(commenti);
                 result.put(r.getId(), r);
+
             }
         } catch (SQLException exc) {
             System.out.println("Errore nella select in ricettaDAO");
@@ -246,4 +266,116 @@ public class RicettaDAO implements IDAO {
         }
         return result;
     }
+
+    public Map<Integer, Entity> readByIngredients(List<String> ingredients){
+        String query = "SELECT ricette.* FROM ricette JOIN ricette_ingredienti ON ricette.id = ricette_ingredienti.id_ricetta" +
+        "JOIN ingredienti ON ricette_ingredienti.id_ingrediente = ingredienti.id WHERE ingredienti.nome IN (";
+        for (int i = 0; i < ingredients.size(); i++) {
+            query += "'" + ingredients.get(i) + "'";
+            if (i!= ingredients.size() - 1)
+                query += ",";
+        }
+        query += ");";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Map<Integer, Entity> result = new HashMap<>();
+
+        try {
+            Map <String, String> params = new HashMap<>();
+            ps = database.getConnection().prepareStatement(query);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                params.put("id", rs.getInt(1) + "");
+                params.put("nome", rs.getString(2));
+                params.put("istruzioni", rs.getString(3));
+                params.put("portata", rs.getString(4));
+                params.put("difficolta", rs.getInt(5) + "");
+                params.put("tempoPreparazione", rs.getInt(6) + "");
+                params.put("serving", rs.getInt(7) + "");
+                params.put("linkImmagine", rs.getString(8));
+
+                Ricetta r = context.getBean(Ricetta.class, params);
+
+                List<RicettaIngrediente> ingredienti = new ArrayList<>();
+                for (Entity ricettaIngrediente : ricettaIngredienteDAO.read().values())
+                ingredienti.add((RicettaIngrediente) ricettaIngrediente);
+                ((Ricetta) result).setIngrediente(ingredienti);
+              
+
+                List<Commento> commenti = commentoDAO.getCommentoByRecipe(Integer.parseInt(params.get("id")));
+                ((Ricetta) result).setCommenti(commenti);
+                result.put(r.getId(), r);
+            }
+
+        } catch (SQLException exc) {
+            System.err.println("Errore nela query in RicettaDAO");
+        } finally {
+            try {
+                ps.close();
+                rs.close();
+            } catch (Exception exc) {
+                System.out.println("Errore chiusura prepared Statement");
+            }
+        }
+        return result;
+    }
+
+    public Map<Integer, Entity> readByRecepieType(Map<String, String> params) {
+        String query = "SELECT * FROM ricette r WHERE EXISTS (SELECT * FROM ricette_ingredienti ri" +
+        "JOIN ingredienti i ON ri.id_ingrediente = i.id WHERE ri.id_ricetta = r.id AND (i.senza_glutine = ? AND i.vegano = ? AND i.vegetariano = ?)";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Map<Integer, Entity> result = new HashMap<>();
+
+        try {
+            ps = database.getConnection().prepareStatement(query);
+            
+        if(params.containsKey("senza_glutine")){
+            ps.setBoolean(1,Boolean.parseBoolean(params.get("senza_glutine")));
+        }else {
+            ps.setBoolean(1,false);
+        }
+
+        if (params.containsKey("vegano")){
+             ps.setBoolean(2,Boolean.parseBoolean(params.get("vegano")));
+        } else {
+            ps.setBoolean(2,false);
+        }
+
+        if (params.containsKey("vegetariano")){
+            ps.setBoolean(3,Boolean.parseBoolean(params.get("vegetariano")));
+        } else {
+            ps.setBoolean(3,false);
+        }
+
+
+        Ricetta r = context.getBean(Ricetta.class, params);
+
+        List<RicettaIngrediente> ingredienti = new ArrayList<>();
+        for (Entity ricettaIngrediente : ricettaIngredienteDAO.read().values())
+        ingredienti.add((RicettaIngrediente) ricettaIngrediente);
+        ((Ricetta) result).setIngrediente(ingredienti);
+      
+
+        List<Commento> commenti = commentoDAO.getCommentoByRecipe(Integer.parseInt(params.get("id")));
+        ((Ricetta) result).setCommenti(commenti);
+        result.put(r.getId(), r);
+
+        } catch (SQLException exc) {
+            System.err.println("Errore nela query in RicettaDAO");
+        } finally {
+            try {
+                ps.close();
+                rs.close();
+            } catch (Exception exc) {
+                System.out.println("Errore chiusura prepared Statement");
+            }
+        }
+        return result;
+    }
+        
+   
+    
+
+
 }

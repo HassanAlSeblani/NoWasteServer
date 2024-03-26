@@ -1,6 +1,7 @@
 package com.NoWaste.NoWaste.controllers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -21,7 +22,7 @@ import com.NoWaste.NoWaste.entities.Ricetta;
 import com.NoWaste.NoWaste.services.LoginService;
 import com.NoWaste.NoWaste.services.RicettaService;
 
-@CrossOrigin(origins = { "http://localhost:4200" })
+@CrossOrigin(origins = {"http://localhost:4200"})
 @RestController
 @RequestMapping("api/recipe")
 public class RicettaRestController {
@@ -98,12 +99,12 @@ public class RicettaRestController {
      * Ricette By Ingredienti
      * Endpoint: /RecipesByIngredients
      * Tipo di ritorno: List<Ricetta>
-     * Parametri richiesti: List<String>, token
+     * Parametri richiesti: List<String>, token ( Arriverà un json, da trasformare in mappa in TS )
      */
     @PostMapping("/filterIngredientRecipes")
     public List<Ricetta> filterIngredientRecipes(@RequestHeader String token, @RequestBody Map<String, String> body) {
         if (loginService.checkLogin(token))
-            return ricettaService.findRecipeByIngredient(body);
+            return ricettaService.findRecipeByIngredients(new ArrayList<String>(body.values()));
 
         return new ArrayList<>();
     }
