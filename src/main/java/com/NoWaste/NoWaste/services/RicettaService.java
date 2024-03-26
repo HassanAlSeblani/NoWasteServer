@@ -36,18 +36,29 @@ public class RicettaService {
     }
 
     public List<Ricetta> findRecipeFilter(Map<String, String> body) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findRecipeFilter'");
+        List<Ricetta> ricette = new ArrayList<>();
+
+        for (Entity ricetta : ricettaDAO.readByFilter(body).values()) {
+            ricette.add((Ricetta) ricetta);
+        }
+
+        return ricette;
     }
 
     public List<Ricetta> findTypeRecipeFilter(Map<String, String> body) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findTypeRecipeFilter'");
+        List<Ricetta> racetta = new ArrayList<>();
+         for (Entity ricetta : ricettaDAO.readByRecepieType(body).values()) {
+            racetta.add((Ricetta) ricetta);
+        }
+        return racetta;
     }
 
-    public List<Ricetta> findRecipeByIngredient(Map<String, String> body) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findRecipeByIngredient'");
+    public List<Ricetta> findRecipeByIngredients(List<String> values) {
+        List<Ricetta> racette = new ArrayList<>();
+        for (Entity ricetta : ricettaDAO.readByIngredients(values).values()) {
+            racette.add((Ricetta) ricetta);
+        }
+        return racette;
     }
 
     public boolean createRecipe(Map<String, String> params) {

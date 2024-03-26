@@ -7,7 +7,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
 import com.NoWaste.NoWaste.entities.Commento;
+import com.NoWaste.NoWaste.entities.Ingrediente;
 import com.NoWaste.NoWaste.entities.Ricetta;
+import com.NoWaste.NoWaste.entities.RicettaIngrediente;
 import com.NoWaste.NoWaste.entities.Utente;
 
 @Configuration
@@ -46,6 +48,26 @@ public class EntitiesContext {
                 Integer.parseInt(params.get("punteggio")),
                 params.get("commento"),
                 Integer.parseInt(params.get("id_ricetta")));
+    }
+
+    @Bean
+    @Scope("prototype")
+    public RicettaIngrediente newRicettaIngrediente(Map<String, String> params) {
+        return new RicettaIngrediente(
+                Integer.parseInt(params.get("id")),
+                Integer.parseInt(params.get("quantita")),
+                params.get("unitaMisura"),
+                Integer.parseInt(params.get("id_ricetta")));
+    }
+    @Bean
+    @Scope("prototype")
+    public Ingrediente newIngrediente(Map<String, String> params) {
+        return new Ingrediente(
+                Integer.parseInt(params.get("id")),
+                params.get("nome"),
+                Boolean.parseBoolean(params.get("vegano")),
+                Boolean.parseBoolean(params.get("vegetariano")),
+                Boolean.parseBoolean(params.get("senzaGlutine")));
     }
 
 }

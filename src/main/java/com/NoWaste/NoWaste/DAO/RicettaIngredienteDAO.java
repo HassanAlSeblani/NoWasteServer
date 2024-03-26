@@ -11,10 +11,14 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import com.NoWaste.NoWaste.entities.Entity;
+import com.NoWaste.NoWaste.entities.Ingrediente;
 import com.NoWaste.NoWaste.entities.RicettaIngrediente;
 
 @Service
 public class RicettaIngredienteDAO implements IDAO{
+
+    @Autowired
+    private IngredienteDAO ingredienteDAO;
 
        @Autowired
     private ApplicationContext context;
@@ -65,10 +69,10 @@ public class RicettaIngredienteDAO implements IDAO{
                 Map<String, String> params = new HashMap<>();
                 params.put("id", rs.getInt(1)+"");
                 params.put("id_ricetta", rs.getInt(2)+"");
-                params.put("id_ingrediente", rs.getInt(3)+"");
                 params.put("quantita", rs.getInt(4)+"");
 
                 RicettaIngrediente ri = context.getBean(RicettaIngrediente.class, params);
+                ri.setIngrediente((Ingrediente) ingredienteDAO.readById(rs.getInt(3)));
                 result.put(ri.getId(), ri);
             }
             
@@ -152,10 +156,10 @@ public class RicettaIngredienteDAO implements IDAO{
                 Map<String, String> params = new HashMap<>();
                 params.put("id", rs.getInt(1)+"");
                 params.put("id_ricetta", rs.getInt(2)+"");
-                params.put("id_ingrediente", rs.getInt(3)+"");
                 params.put("quantita", rs.getInt(4)+"");
 
                 result = context.getBean(RicettaIngrediente.class, params);
+                ((RicettaIngrediente) result).setIngrediente((Ingrediente) ingredienteDAO.readById(rs.getInt(3)));
             }
             
         } catch (SQLException exc) {
