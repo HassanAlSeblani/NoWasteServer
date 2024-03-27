@@ -36,7 +36,7 @@ public class RicettaDAO implements IDAO {
 
     @Override
     public boolean create(Entity e) {
-        String query = "INSERT INTO ricette (Nome, Istruzioni, Portata, Difficolta, Tempo_preparazione, Serving, link_immagine) VALUES (?,?,?,?,?,?)";
+        String query = "INSERT INTO ricette (Nome, Istruzioni, Portata, Difficolta, Tempo_preparazione, Serving, link_immagine) VALUES (?,?,?,?,?,?,?)";
         PreparedStatement ps = null;
         try {
             Ricetta r = (Ricetta) e;
@@ -48,10 +48,11 @@ public class RicettaDAO implements IDAO {
             ps.setInt(5, r.getTempoPreparazione());
             ps.setInt(6, r.getServing());
             ps.setString(7, r.getLinkImmagine());
+            System.out.println(query);
             ps.executeUpdate();
 
         } catch (SQLException exc) {
-            System.out.println("Errore inserimento ricetta");
+            System.out.println("Errore inserimento ricetta" + exc.getMessage());
             return false;
         } catch (ClassCastException exc) {
             System.out.println("Errore tipo dato erraro in ricettaDAO");
@@ -223,8 +224,27 @@ public class RicettaDAO implements IDAO {
         ResultSet rs = null;
 
         for (String key : filter.keySet()) {
-            query += key + " = " + filter.get(key);
+
+            if(filter.get(key).matches("-?\\d+")){
+                if(key.equalsIgnoreCase("tempo_preparazione"))
+                {
+                    query += key + " BETWEEN 0 AND " + filter.get(key) + " AND ";
+                }
+                else
+                {
+                    query += key + " = " + filter.get(key) + " AND ";
+                }
+            }
+            else
+            {
+                query += key + " LIKE " + "\"%" + filter.get(key) + "%\"" + " AND ";
+            }
+
+
         }
+
+        query = query.substring(0, query.length() - 5);
+
 
         Map<Integer, Entity> result = new HashMap<>();
 
@@ -247,21 +267,21 @@ public class RicettaDAO implements IDAO {
                 List<RicettaIngrediente> ingredienti = new ArrayList<>();
                 for (Entity ricettaIngrediente : ricettaIngredienteDAO.readByIdRicetta(r.getId()).values())
                     ingredienti.add((RicettaIngrediente) ricettaIngrediente);
-                    ((Ricetta) result).setIngrediente(ingredienti);
+                    r.setIngrediente(ingredienti);
 
                 List<Commento> commenti = commentoDAO.getCommentoByRecipe(Integer.parseInt(params.get("id")));
-                ((Ricetta) result).setCommenti(commenti);
+                r.setCommenti(commenti);
                 result.put(r.getId(), r);
 
             }
         } catch (SQLException exc) {
-            System.out.println("Errore nella select in ricettaDAO");
+            System.out.println("Errore nella select in ricettaDAO" + exc.getMessage());
         } finally {
             try {
                 ps.close();
                 rs.close();
             } catch (Exception exc) {
-                System.out.println("Errore chiusura prepared Statement");
+                System.out.println("Errore chiusura prepared Statement"+ exc.getMessage());
             }
         }
         return result;
@@ -269,13 +289,14 @@ public class RicettaDAO implements IDAO {
 
     public Map<Integer, Entity> readByIngredients(List<String> ingredients){
         String query = "SELECT ricette.* FROM ricette JOIN ricette_ingredienti ON ricette.id = ricette_ingredienti.id_ricetta" +
-        "JOIN ingredienti ON ricette_ingredienti.id_ingrediente = ingredienti.id WHERE ingredienti.nome IN (";
+        " JOIN ingredienti ON ricette_ingredienti.id_ingrediente = ingredienti.id WHERE ingredienti.nome IN (";
         for (int i = 0; i < ingredients.size(); i++) {
             query += "'" + ingredients.get(i) + "'";
             if (i!= ingredients.size() - 1)
                 query += ",";
         }
         query += ");";
+        System.out.println(query);
         PreparedStatement ps = null;
         ResultSet rs = null;
         Map<Integer, Entity> result = new HashMap<>();
@@ -299,11 +320,11 @@ public class RicettaDAO implements IDAO {
                 List<RicettaIngrediente> ingredienti = new ArrayList<>();
                 for (Entity ricettaIngrediente : ricettaIngredienteDAO.readByIdRicetta(r.getId()).values())
                 ingredienti.add((RicettaIngrediente) ricettaIngrediente);
-                ((Ricetta) result).setIngrediente(ingredienti);
+                r.setIngrediente(ingredienti);
               
 
                 List<Commento> commenti = commentoDAO.getCommentoByRecipe(Integer.parseInt(params.get("id")));
-                ((Ricetta) result).setCommenti(commenti);
+                r.setCommenti(commenti);
                 result.put(r.getId(), r);
             }
 
@@ -320,9 +341,9 @@ public class RicettaDAO implements IDAO {
         return result;
     }
 
-    public Map<Integer, Entity> readByRecepieType(Map<String, String> params) {
+    public Map<Integer, Entity> readByRecipeType(Map<String, String> params) {
         String query = "SELECT * FROM ricette r WHERE EXISTS (SELECT * FROM ricette_ingredienti ri" +
-        "JOIN ingredienti i ON ri.id_ingrediente = i.id WHERE ri.id_ricetta = r.id AND (i.senza_glutine = ? AND i.vegano = ? AND i.vegetariano = ?)";
+        " JOIN ingredienti i ON ri.id_ingrediente = i.id WHERE ri.id_ricetta = r.id AND (i.senza_glutine = ? AND i.vegano = ? AND i.vegetariano = ?)";
         PreparedStatement ps = null;
         ResultSet rs = null;
         Map<Integer, Entity> result = new HashMap<>();
@@ -347,18 +368,19 @@ public class RicettaDAO implements IDAO {
         } else {
             ps.setBoolean(3,false);
         }
-
+        System.out.println(query);
+        rs = ps.executeQuery();
 
         Ricetta r = context.getBean(Ricetta.class, params);
 
         List<RicettaIngrediente> ingredienti = new ArrayList<>();
         for (Entity ricettaIngrediente : ricettaIngredienteDAO.readByIdRicetta(r.getId()).values())
         ingredienti.add((RicettaIngrediente) ricettaIngrediente);
-        ((Ricetta) result).setIngrediente(ingredienti);
+        r.setIngrediente(ingredienti);
       
 
         List<Commento> commenti = commentoDAO.getCommentoByRecipe(Integer.parseInt(params.get("id")));
-        ((Ricetta) result).setCommenti(commenti);
+        r.setCommenti(commenti);
         result.put(r.getId(), r);
 
         } catch (SQLException exc) {

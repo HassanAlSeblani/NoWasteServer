@@ -47,7 +47,7 @@ public class RicettaService {
 
     public List<Ricetta> findTypeRecipeFilter(Map<String, String> body) {
         List<Ricetta> racetta = new ArrayList<>();
-         for (Entity ricetta : ricettaDAO.readByRecepieType(body).values()) {
+         for (Entity ricetta : ricettaDAO.readByRecipeType(body).values()) {
             racetta.add((Ricetta) ricetta);
         }
         return racetta;

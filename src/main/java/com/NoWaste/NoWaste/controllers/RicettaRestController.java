@@ -22,6 +22,8 @@ import com.NoWaste.NoWaste.entities.Ricetta;
 import com.NoWaste.NoWaste.services.LoginService;
 import com.NoWaste.NoWaste.services.RicettaService;
 
+     //cercare immagini esistenti per ricette
+
 @CrossOrigin(origins = {"http://localhost:4200"})
 @RestController
 @RequestMapping("api/recipe")
@@ -65,7 +67,6 @@ public class RicettaRestController {
     }
 
 
-    //continua a testare da qua
     /*
      * 
      * POST:
@@ -77,6 +78,8 @@ public class RicettaRestController {
      */
     @PostMapping("/filterRecipes")
     public List<Ricetta> filterRecipes(@RequestHeader String token, @RequestBody Map<String, String> body) {
+        
+        //mettersi d'accordo con frontend su nomi parametri e range tempo di preparazione della ricetta
         if (loginService.checkLogin(token))
             return ricettaService.findRecipeFilter(body);
 
@@ -89,6 +92,8 @@ public class RicettaRestController {
      * Tipo di ritorno:
      * Parametri richiesti:
      */
+
+     //da fare nel front end
     @PostMapping("/filterTypeRecipes")
     public List<Ricetta> filterTypeRecipes(@RequestHeader String token, @RequestBody Map<String, String> body) {
         if (loginService.checkLogin(token))

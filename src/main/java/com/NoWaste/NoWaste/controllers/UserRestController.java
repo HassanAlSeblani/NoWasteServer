@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 
@@ -36,9 +37,8 @@ public class UserRestController {
     private UtenteService utenteService;
     @GetMapping("/allUsers")
     public List<Utente> getAllUtenti(@RequestHeader("token") String token) {
-        if(token != null) //da fare il controllo sul token
+        if(token != null && loginService.checkLoginAdmin(token)) //da fare il controllo sul token
         {
-            if(loginService.checkLogin(token))
                 return utenteService.getAllUtenti();
         }
         return new ArrayList<Utente>();
@@ -48,10 +48,10 @@ public class UserRestController {
     public Utente getUtenteById(@RequestHeader("token") String token, @RequestParam("id") int idUtente) {
         if(token != null) //da fare il controllo sul token
         {
-            if(loginService.checkLogin(token))
-                return utenteService.getUtenteById(idUtente);
+                if((loginService.checkLoginAdmin(token)) || (loginService.checkLoginUtente(token) && loginService.matchUser(token, idUtente)))
+                    return utenteService.getUtenteById(idUtente);
         }
-            return new Utente(idUtente);
+            return null;
     }
 
     @DeleteMapping("/deleteUser")
@@ -59,23 +59,19 @@ public class UserRestController {
 
         if(token != null) //da fare il controllo sul token
         {
-            return utenteService.deleteUtenteById(idUtente);
+            if((loginService.checkLoginAdmin(token)) || (loginService.checkLoginUtente(token) && loginService.matchUser(token, idUtente)))
+                return utenteService.deleteUtenteById(idUtente);
         }
-        else
-        {
             return false;
-        }
     }
     
-    @PatchMapping("/updateUser")
+    @PostMapping("/updateUser")
     public Utente updateUtente(@RequestHeader("token") String token, @RequestBody Utente utente) {
         if(token != null) //da fare il controllo sul token
         {
-            return utenteService.updateUtente(utente);
+            if((loginService.checkLoginAdmin(token)) || (loginService.checkLoginUtente(token) && loginService.matchUser(token, utente.getId())))
+                return utenteService.updateUtente(utente);
         }
-        else
-        {
-            return new Utente(utente.getId());
-        }
+            return null;
     }
 }

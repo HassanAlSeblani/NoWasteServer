@@ -24,7 +24,7 @@ public class UtenteDAO implements IDAO{
 
     @Override
     public boolean create(Entity e) {
-        String query = "INSERT INTO Utenti (nome, cognome, user, `password`, ruolo) VALUES (?,?,?,?,?)";
+        String query = "INSERT INTO Utenti (nome, cognome, username, `password`, ruolo) VALUES (?,?,?,?,?)";
         PreparedStatement ps = null;
 
         try {
