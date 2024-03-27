@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import com.NoWaste.NoWaste.DAO.RicettaDAO;
@@ -18,8 +17,6 @@ public class RicettaService {
     @Autowired
     private RicettaDAO ricettaDAO;
 
-    @Autowired
-    private ApplicationContext context;
 
     public List<Ricetta> findAllRecipes() {
         List<Ricetta> ricette = new ArrayList<>();
