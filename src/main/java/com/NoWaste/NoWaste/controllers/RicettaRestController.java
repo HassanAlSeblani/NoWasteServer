@@ -122,9 +122,9 @@ public class RicettaRestController {
      * Tipo di ritorno: boolean
      * Parametri richiesti: token admin, Ricetta
      */@PostMapping("/addRecipe")
-    public boolean addRecipe(@RequestHeader String token, @RequestBody Map<String, String> body) {
+    public boolean addRecipe(@RequestHeader String token, @RequestBody Ricetta ricetta) {
         if (loginService.checkLoginAdmin(token))
-            return ricettaService.createRecipe(body);
+            return ricettaService.createRecipe(ricetta);
 
         return false;
     }
@@ -136,10 +136,10 @@ public class RicettaRestController {
      * Tipo di ritorno: boolean
      * Parametri richiesti: Ricetta, token admin
      */
-    @PatchMapping("/updateRecipe")
-    public boolean updateRecipe(@RequestHeader String token, @RequestBody Map<String, String> body) {
+    @PostMapping("/updateRecipe")
+    public boolean updateRecipe(@RequestHeader String token, @RequestBody Ricetta ricetta) {
         if (loginService.checkLoginAdmin(token))
-            return ricettaService.updateRecipe(body);
+            return ricettaService.updateRecipe(ricetta);
 
         return false;
     }

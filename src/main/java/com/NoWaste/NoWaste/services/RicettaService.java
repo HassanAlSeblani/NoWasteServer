@@ -46,29 +46,27 @@ public class RicettaService {
     }
 
     public List<Ricetta> findTypeRecipeFilter(Map<String, String> body) {
-        List<Ricetta> racetta = new ArrayList<>();
+        List<Ricetta> ricette = new ArrayList<>();
          for (Entity ricetta : ricettaDAO.readByRecipeType(body).values()) {
-            racetta.add((Ricetta) ricetta);
+            ricette.add((Ricetta) ricetta);
         }
-        return racetta;
+        return ricette;
     }
 
     public List<Ricetta> findRecipeByIngredients(List<String> values) {
-        List<Ricetta> racette = new ArrayList<>();
+        List<Ricetta> ricette = new ArrayList<>();
         for (Entity ricetta : ricettaDAO.readByIngredients(values).values()) {
-            racette.add((Ricetta) ricetta);
+            ricette.add((Ricetta) ricetta);
         }
-        return racette;
+        return ricette;
     }
 
-    public boolean createRecipe(Map<String, String> params) {
-        Ricetta r = context.getBean(Ricetta.class, params);
-        return ricettaDAO.create(r);
+    public boolean createRecipe(Ricetta ricetta) {
+        return ricettaDAO.create(ricetta);
     }
 
-    public boolean updateRecipe(Map<String, String> params) {
-        Ricetta r = context.getBean(Ricetta.class, params);
-        return ricettaDAO.update(r);
+    public boolean updateRecipe(Ricetta ricetta) {
+        return ricettaDAO.update(ricetta);
     }
 
     public boolean deleteRecipe(int id) {

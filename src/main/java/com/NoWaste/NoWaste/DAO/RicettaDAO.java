@@ -48,7 +48,6 @@ public class RicettaDAO implements IDAO {
             ps.setInt(5, r.getTempoPreparazione());
             ps.setInt(6, r.getServing());
             ps.setString(7, r.getLinkImmagine());
-            System.out.println(query);
             ps.executeUpdate();
 
         } catch (SQLException exc) {
@@ -117,7 +116,7 @@ public class RicettaDAO implements IDAO {
 
     @Override
     public boolean update(Entity e) {
-        String query = "UPDATE ricetta Set nome =?, istruzioni =?, Portata=?, Difficolta=?, tempo_preparazione=?, serving=?, link_immagine =? WHERE id=?";
+        String query = "UPDATE ricette Set nome =?, istruzioni =?, Portata=?, Difficolta=?, tempo_preparazione=?, serving=?, link_immagine =? WHERE id=?";
         PreparedStatement ps = null;
         try {
             Ricetta r = (Ricetta) e;
