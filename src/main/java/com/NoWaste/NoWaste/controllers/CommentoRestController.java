@@ -34,7 +34,7 @@ public class CommentoRestController {
     @GetMapping("/commentsByUser")
     public List<Commento> getCommentiByUser(@RequestHeader("token") String token, @RequestParam("userId") int userId) {
         if (token != null) {
-            if (loginService.checkLoginUtente(token)) {
+            if (loginService.checkLogin(token)) {
                 return commentoService.getCommentiByUser(userId);
             }
         }
@@ -46,7 +46,7 @@ public class CommentoRestController {
             @RequestParam("recipeId") int recipeId) {
 
         if (token != null) {
-            if (loginService.checkLoginUtente(token)) {
+            if (loginService.checkLogin(token)) {
                 return commentoService.getCommentiByRecipe(recipeId);
             }
         }
@@ -57,7 +57,7 @@ public class CommentoRestController {
     public boolean deleteCommento(@RequestHeader("token") String token, @RequestParam("commentId") int commentId) {
 
         if (token != null) {
-            if (loginService.checkLoginUtente(token)) {
+            if (loginService.checkLoginAdmin(token)) {
                 return commentoService.deleteCommento(commentId);
             }
         }
@@ -68,7 +68,7 @@ public class CommentoRestController {
     public boolean updateCommento(@RequestHeader("token") String token, @RequestBody Commento commento) {
 
         if (token != null) {
-            if (loginService.checkLoginUtente(token)) {
+            if (loginService.checkLoginAdmin(token)) {
                 return commentoService.updateCommento(commento);
             }
         }
