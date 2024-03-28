@@ -34,7 +34,7 @@ public class LoginService {
 
     public boolean registerUser(Utente utente) {
         // Verifica se l'utente esiste già nel database
-        if (utenteDAO.readFromUsernameAndPassword(utente.getUser(), utente.getPassword()) != null) {
+        if (utenteDAO.readFromUsernameAndPassword(utente.getUsername(), utente.getPassword()) != null) {
             System.out.println("L'utente esiste già");
             return false;
         }

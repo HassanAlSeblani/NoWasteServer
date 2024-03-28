@@ -29,11 +29,10 @@ public class UtenteDAO implements IDAO{
 
         try {
             Utente u = (Utente)e;
-            System.out.println(u.getUser());
             ps = database.getConnection().prepareStatement(query);
             ps.setString(1, u.getNome());
             ps.setString(2, u.getCognome());
-            ps.setString(3, u.getUser());
+            ps.setString(3, u.getUsername());
             ps.setString(4, u.getPassword());
             ps.setString(5, u.getRuolo());
             ps.executeUpdate();
@@ -71,7 +70,7 @@ public class UtenteDAO implements IDAO{
             params.put("id", rs.getInt(1)+"");
             params.put("nome", rs.getString(2));
             params.put("cognome", rs.getString(3));
-            params.put("user", rs.getString(4));
+            params.put("username", rs.getString(4));
             params.put("password", rs.getString(5));
             params.put("ruolo", rs.getString(6));
 
@@ -102,7 +101,7 @@ public class UtenteDAO implements IDAO{
             ps = database.getConnection().prepareStatement(query);
             ps.setString(1, u.getNome());
             ps.setString(2, u.getCognome());
-            ps.setString(3, u.getUser());
+            ps.setString(3, u.getUsername());
             ps.setString(4, u.getPassword());
             ps.setString(5, u.getRuolo());
             ps.setInt(6, u.getId());
@@ -164,7 +163,7 @@ public class UtenteDAO implements IDAO{
             params.put("id", rs.getInt(1)+"");
             params.put("nome", rs.getString(2));
             params.put("cognome", rs.getString(3));
-            params.put("user", rs.getString(4));
+            params.put("username", rs.getString(4));
             params.put("password", rs.getString(5));
             params.put("ruolo", rs.getString(6));
 
@@ -200,7 +199,7 @@ public class UtenteDAO implements IDAO{
                 params.put("id", rs.getInt(1)+"");
                 params.put("nome", rs.getString(2));
                 params.put("cognome", rs.getString(3));
-                params.put("user", rs.getString(4));
+                params.put("username", rs.getString(4));
                 params.put("password", rs.getString(5));
                 params.put("ruolo", rs.getString(6));
 
