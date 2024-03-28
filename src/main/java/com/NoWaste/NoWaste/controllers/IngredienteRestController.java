@@ -57,7 +57,7 @@ public class IngredienteRestController {
  */
 
 @GetMapping("/ingredientById")
-    public Ingrediente ingredientsById(@RequestHeader String token, @RequestParam("id") int id) {
+    public Ingrediente ingredientById(@RequestHeader String token, @RequestParam("id") int id) {
 
     if (loginService.checkLogin(token))
         return ingredienteService.findIngredientById(id);
@@ -84,7 +84,7 @@ public class IngredienteRestController {
      *  */
 
      @PostMapping("/addIngredient")
-     public boolean addIngredients(@RequestHeader String token, @RequestBody Ingrediente ingrediente) {
+     public boolean addIngredient(@RequestHeader String token, @RequestBody Ingrediente ingrediente) {
          if (loginService.checkLoginAdmin(token))
              return ingredienteService.createIngredient(ingrediente);
 
