@@ -5,9 +5,12 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.NoWaste.NoWaste.DTO.LoginStatus;
@@ -41,36 +44,36 @@ public class LoginRestController {
     }
 
 // Da riguardare per migliorare le chiamate nei controllers
-       @PostMapping("/registerUser")
+       @GetMapping("/registerUser")
     public ResponseEntity<Boolean> registerUser(@RequestBody Utente utente) {
         boolean registrato = loginService.registerUser(utente);
         return ResponseEntity.ok(registrato);
     }
 
-    @PostMapping("/checkLogin")
-    public ResponseEntity<Boolean> checkLogin(@RequestBody Map<String, String> body) {
-        boolean match = loginService.checkLogin(body.get("token"));
+    @GetMapping("/checkLogin")
+    public ResponseEntity<Boolean> checkLogin(@RequestHeader String token) {
+        boolean match = loginService.checkLogin(token);
         return ResponseEntity.ok(match);
     }
 
-    @PostMapping("/checkLoginAdmin")
-    public ResponseEntity<Boolean> checkLoginAdmin(@RequestBody Map<String, String> body)
+    @GetMapping("/checkLoginAdmin")
+    public ResponseEntity<Boolean> checkLoginAdmin(@RequestHeader String token)
     {
-        boolean match = loginService.checkLoginAdmin(body.get("token"));
+        boolean match = loginService.checkLoginAdmin(token);
         return ResponseEntity.ok(match);
     }
     
-    @PostMapping("/checkLoginUser")
-    public ResponseEntity<Boolean> checkLoginUser(@RequestBody Map<String, String> body)
+    @GetMapping("/checkLoginUser")
+    public ResponseEntity<Boolean> checkLoginUser(@RequestHeader String token)
     {
-        boolean match = loginService.checkLoginUtente(body.get("token"));
+        boolean match = loginService.checkLoginUtente(token);
         return ResponseEntity.ok(match);
     }
     
-    @PostMapping("/matchUser")
-    public ResponseEntity<Boolean> matchUtente(@RequestBody Map<String, String> body)
+    @GetMapping("/matchUser")
+    public ResponseEntity<Boolean> matchUtente(@RequestHeader String token, @RequestParam("idUtente") int idUtente)
     {
-        boolean match = loginService.matchUser(body.get("token"), Integer.parseInt(body.get("idUtente")));
+        boolean match = loginService.matchUser(token, idUtente);
         return ResponseEntity.ok(match);
     }
     
