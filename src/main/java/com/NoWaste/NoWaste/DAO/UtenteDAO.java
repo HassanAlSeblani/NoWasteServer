@@ -29,6 +29,7 @@ public class UtenteDAO implements IDAO{
 
         try {
             Utente u = (Utente)e;
+            System.out.println(u.getUser());
             ps = database.getConnection().prepareStatement(query);
             ps.setString(1, u.getNome());
             ps.setString(2, u.getCognome());
@@ -36,6 +37,7 @@ public class UtenteDAO implements IDAO{
             ps.setString(4, u.getPassword());
             ps.setString(5, u.getRuolo());
             ps.executeUpdate();
+            
 
         } catch (SQLException exc) {
             System.out.println("Errore inserimento utente: " + exc.getMessage());

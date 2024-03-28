@@ -38,6 +38,8 @@ public class LoginService {
             System.out.println("L'utente esiste già");
             return false;
         }
+        utente.setRuolo("user");
+        
 
         // Effettua la registrazione dell'utente nel database
         return utenteDAO.create(utente);
