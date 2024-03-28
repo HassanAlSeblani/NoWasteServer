@@ -47,5 +47,17 @@ public class LoginRestController {
         return ResponseEntity.ok(registrato);
     }
 
+    @PostMapping("/checkLogin")
+    public boolean checkLogin(@RequestBody Map<String, String> body) {
+        return loginService.checkLogin(body.get("token"));
+    }
+
+    @PostMapping("/checkLoginAdmin")
+    public boolean checkLoginAdmin(@RequestBody Map<String, String> body)
+    {
+        return loginService.checkLoginAdmin(body.get("token"));
+    }
+    
+
 
 }
