@@ -48,16 +48,31 @@ public class LoginRestController {
     }
 
     @PostMapping("/checkLogin")
-    public boolean checkLogin(@RequestBody Map<String, String> body) {
-        return loginService.checkLogin(body.get("token"));
+    public ResponseEntity<Boolean> checkLogin(@RequestBody Map<String, String> body) {
+        boolean match = loginService.checkLogin(body.get("token"));
+        return ResponseEntity.ok(match);
     }
 
     @PostMapping("/checkLoginAdmin")
-    public boolean checkLoginAdmin(@RequestBody Map<String, String> body)
+    public ResponseEntity<Boolean> checkLoginAdmin(@RequestBody Map<String, String> body)
     {
-        return loginService.checkLoginAdmin(body.get("token"));
+        boolean match = loginService.checkLoginAdmin(body.get("token"));
+        return ResponseEntity.ok(match);
     }
     
-
+    @PostMapping("/checkLoginUser")
+    public ResponseEntity<Boolean> checkLoginUser(@RequestBody Map<String, String> body)
+    {
+        boolean match = loginService.checkLoginUtente(body.get("token"));
+        return ResponseEntity.ok(match);
+    }
+    
+    @PostMapping("/matchUser")
+    public ResponseEntity<Boolean> matchUtente(@RequestBody Map<String, String> body)
+    {
+        boolean match = loginService.matchUser(body.get("token"), Integer.parseInt(body.get("idUtente")));
+        return ResponseEntity.ok(match);
+    }
+    
 
 }
