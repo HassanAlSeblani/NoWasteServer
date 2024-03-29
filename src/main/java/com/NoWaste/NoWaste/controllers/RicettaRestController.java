@@ -111,7 +111,7 @@ public class RicettaRestController {
     @PostMapping("/filterIngredientRecipes")
     public List<Ricetta> filterIngredientRecipes(@RequestHeader String token, @RequestBody Map<String, String> body) {
         if (loginService.checkLogin(token))
-            return ricettaService.findRecipeByIngredients(new ArrayList<String>(body.values()));
+            return ricettaService.findRecipeByIngredients(new ArrayList<String>(body.keySet()));
 
         return new ArrayList<>();
     }
