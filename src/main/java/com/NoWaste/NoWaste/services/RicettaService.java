@@ -50,8 +50,18 @@ public class RicettaService {
         return ricette;
     }
 
-    public List<Ricetta> findRecipeByIngredients(List<String> values) {
+    public List<Ricetta> findRecipeByIngredients(Map<String,String> body) {
         List<Ricetta> ricette = new ArrayList<>();
+        List<String> values = new ArrayList<>();
+
+        for(String booleano : body.keySet())
+        {
+            if(Boolean.parseBoolean(body.get(booleano)))
+            {
+                values.add(booleano);
+            }
+        }
+
         for (Entity ricetta : ricettaDAO.readByIngredients(values).values()) {
             ricette.add((Ricetta) ricetta);
         }
