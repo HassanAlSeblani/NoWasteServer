@@ -395,8 +395,27 @@ public class RicettaDAO implements IDAO {
         return result;
     }
         
-   
-    
+    public int lastRicetta()
+    {
+        String query = "SELECT MAX(id) FROM ricette";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        int id = 0;
+        try{
+            ps = database.getConnection().prepareStatement(query);
+            rs = ps.executeQuery();
+            while(rs.next())
+            {
+                id = rs.getInt(1);
+            }
+        }
+        catch(SQLException exc)
+        {
+            System.out.println("Errore nella select in lastRicetta" + exc.getMessage());
+        }
+
+        return id;
+    }
 
 
 }

@@ -173,5 +173,62 @@ public class IngredienteDAO implements IDAO{
         }
         return result;
     }
+
+    public int lastIngrediente()
+    {
+        String query = "SELECT MAX(id) FROM ingredienti";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        int id = 0;
+        try{
+            ps = database.getConnection().prepareStatement(query);
+            rs = ps.executeQuery();
+            while(rs.next())
+            {
+                id = rs.getInt(1);
+            }
+        }
+        catch(SQLException exc)
+        {
+            System.out.println("Errore nella select in lastIngrediente" + exc.getMessage());
+        }
+
+        return id;
+    }
+
+    public Entity readByNome(String nome) {
+        String query = "SELECT * FROM ingredienti WHERE nome=?";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Entity result = null;
+
+        try {
+            ps = database.getConnection().prepareStatement(query);
+            ps.setString(1, nome);
+            rs = ps.executeQuery();
+
+            while(rs.next())    {
+                Map<String, String> params = new HashMap<>();
+                params.put("id", rs.getInt(1)+"");
+                params.put("nome", rs.getString(2));
+                params.put("senza_glutine", rs.getBoolean(3)+"");
+                params.put("vegano", rs.getBoolean(4)+"");
+                params.put("vegetariano", rs.getBoolean(5)+"");
+
+               
+                result = context.getBean(Ingrediente.class, params);
+            }
+        } catch (SQLException exc) {
+            System.out.println("Errore nella select in readByNome in IgredienteDAO" + exc.getMessage());
+        } finally {
+            try {
+                ps.close();
+                rs.close();
+            } catch (Exception exc) {
+                System.out.println("Errore chiusura prepared Statement" + exc.getMessage());
+            }
+        }
+        return result;
+    }
     
 }
