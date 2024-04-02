@@ -35,7 +35,7 @@ public class EntitiesContext {
                 Integer.parseInt(params.get("id")),
                 params.get("nome"),
                 params.get("cognome"),
-                params.get("user"),
+                params.get("username"),
                 params.get("password"),
                 params.get("ruolo"));
     }
