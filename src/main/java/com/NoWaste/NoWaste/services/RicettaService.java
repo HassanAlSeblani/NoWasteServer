@@ -78,8 +78,8 @@ public class RicettaService {
     public boolean createRecipe(Ricetta ricetta) {
 
         boolean result = ricettaDAO.create(ricetta);
-        if (result) {
-            for (RicettaIngrediente ingrediente : ricetta.getIngrediente()) {
+        if (result && ricetta.getIngredienti() != null) {
+            for (RicettaIngrediente ingrediente : ricetta.getIngredienti()) {
                 boolean conta = false;
                 for (Entity e : ingredienteDAO.read().values()) {
                     Ingrediente i = (Ingrediente) e;
