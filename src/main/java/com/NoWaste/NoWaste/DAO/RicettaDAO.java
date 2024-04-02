@@ -51,16 +51,16 @@ public class RicettaDAO implements IDAO {
             ps.executeUpdate();
 
         } catch (SQLException exc) {
-            System.out.println("Errore inserimento ricetta" + exc.getMessage());
+            System.err.println("Errore inserimento ricetta" + exc.getMessage());
             return false;
         } catch (ClassCastException exc) {
-            System.out.println("Errore tipo dato erraro in ricettaDAO");
+            System.err.println("Errore tipo dato erraro in ricettaDAO");
             return false;
         } finally {
             try {
                 ps.close();
             } catch (Exception exc) {
-                System.out.println("Errore chiusura prepared Statement");
+                System.err.println("Errore chiusura prepared Statement");
             }
         }
         return true;
@@ -102,13 +102,13 @@ public class RicettaDAO implements IDAO {
                 result.put(r.getId(), r);
             }
         } catch (SQLException exc) {
-            System.out.println("Errore nella select in ricettaDAO");
+            System.err.println("Errore nella select in ricettaDAO");
         } finally {
             try {
                 ps.close();
                 rs.close();
             } catch (Exception exc) {
-                System.out.println("Errore chiusura prepared Statement");
+                System.err.println("Errore chiusura prepared Statement");
             }
         }
         return result;
@@ -131,16 +131,16 @@ public class RicettaDAO implements IDAO {
             ps.setInt(8, r.getId());
             ps.executeUpdate();
         } catch (SQLException exc) {
-            System.out.println("Eroore aggiornamento ricetta" + exc.getMessage());
+            System.err.println("Eroore aggiornamento ricetta" + exc.getMessage());
             return false;
         } catch (ClassCastException exc) {
-            System.out.println("Errore tipo dato erraro in ricettaDAO");
+            System.err.println("Errore tipo dato erraro in ricettaDAO");
             return false;
         } finally {
             try {
                 ps.close();
             } catch (Exception exc) {
-                System.out.println("Errore chiusura prepared Statement");
+                System.err.println("Errore chiusura prepared Statement");
             }
         }
         return true;
@@ -156,13 +156,13 @@ public class RicettaDAO implements IDAO {
             ps.setInt(1, id);
             ps.executeUpdate();
         } catch (SQLException exc) {
-            System.out.println("Errore cancellazione ricetta" + exc.getMessage());
+            System.err.println("Errore cancellazione ricetta" + exc.getMessage());
             return false;
         } finally {
             try {
                 ps.close();
             } catch (Exception exc) {
-                System.out.println("Errore chiusura prepared Statement");
+                System.err.println("Errore chiusura prepared Statement");
             }
         }
         return true;
@@ -205,13 +205,13 @@ public class RicettaDAO implements IDAO {
                 
             }
         } catch (SQLException exc) {
-            System.out.println("Errore nella select in ricettaDAO");
+            System.err.println("Errore nella select in ricettaDAO");
         } finally {
             try {
                 ps.close();
                 rs.close();
             } catch (Exception exc) {
-                System.out.println("Errore chiusura prepared Statement");
+                System.err.println("Errore chiusura prepared Statement");
             }
         }
         return result;
@@ -274,13 +274,13 @@ public class RicettaDAO implements IDAO {
 
             }
         } catch (SQLException exc) {
-            System.out.println("Errore nella select in ricettaDAO" + exc.getMessage());
+            System.err.println("Errore nella select in ricettaDAO" + exc.getMessage());
         } finally {
             try {
                 ps.close();
                 rs.close();
             } catch (Exception exc) {
-                System.out.println("Errore chiusura prepared Statement"+ exc.getMessage());
+                System.err.println("Errore chiusura prepared Statement"+ exc.getMessage());
             }
         }
         return result;
@@ -334,7 +334,7 @@ public class RicettaDAO implements IDAO {
                 ps.close();
                 rs.close();
             } catch (Exception exc) {
-                System.out.println("Errore chiusura prepared Statement");
+                System.err.println("Errore chiusura prepared Statement");
             }
         }
         return result;
@@ -389,7 +389,7 @@ public class RicettaDAO implements IDAO {
                 ps.close();
                 rs.close();
             } catch (Exception exc) {
-                System.out.println("Errore chiusura prepared Statement");
+                System.err.println("Errore chiusura prepared Statement");
             }
         }
         return result;
@@ -411,7 +411,7 @@ public class RicettaDAO implements IDAO {
         }
         catch(SQLException exc)
         {
-            System.out.println("Errore nella select in lastRicetta" + exc.getMessage());
+            System.err.println("Errore nella select in lastRicetta" + exc.getMessage());
         }
 
         return id;

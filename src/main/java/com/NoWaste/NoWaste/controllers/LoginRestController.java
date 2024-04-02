@@ -32,15 +32,15 @@ public class LoginRestController {
         LoginStatus ls = new LoginStatus();
         ls.setToken ("NONE", 0);
 
-        if (u.getRuolo().equalsIgnoreCase("USER")) {
-            ls.setToken ("USER",  u.getId());     
-            return ls;
-        } else if (u.getRuolo().equalsIgnoreCase("ADMIN")) {
-            ls.setToken ("ADMIN", u.getId());
-            return ls;
-        } else {
-            return ls;
+        if(u != null)
+        {
+            if (u.getRuolo().equalsIgnoreCase("USER")) {
+                ls.setToken("USER", u.getId());
+            } else if (u.getRuolo().equalsIgnoreCase("ADMIN")) {
+                ls.setToken("ADMIN", u.getId());
+            }
         }
+        return ls;
     }
 
 // Da riguardare per migliorare le chiamate nei controllers
