@@ -94,7 +94,7 @@ public class RicettaDAO implements IDAO {
                 List<RicettaIngrediente> ingredienti = new ArrayList<>();
                 for (Entity ricettaIngrediente : ricettaIngredienteDAO.readByIdRicetta(r.getId()).values())
                     ingredienti.add((RicettaIngrediente) ricettaIngrediente);
-                r.setIngrediente(ingredienti);
+                r.setIngredienti(ingredienti);
 
                 List<Commento> commenti = commentoDAO.getCommentoByRecipe(Integer.parseInt(params.get("id")));
                 r.setCommenti(commenti);
@@ -197,7 +197,7 @@ public class RicettaDAO implements IDAO {
                 List<RicettaIngrediente> ingredienti = new ArrayList<>();
                 for (Entity ricettaIngrediente : ricettaIngredienteDAO.readByIdRicetta(id).values())
                     ingredienti.add((RicettaIngrediente) ricettaIngrediente);
-                    ((Ricetta) result).setIngrediente(ingredienti);
+                    ((Ricetta) result).setIngredienti(ingredienti);
 
                 List<Commento> commenti = commentoDAO.getCommentoByRecipe(Integer.parseInt(params.get("id")));
                 ((Ricetta) result).setCommenti(commenti);
@@ -266,7 +266,7 @@ public class RicettaDAO implements IDAO {
                 List<RicettaIngrediente> ingredienti = new ArrayList<>();
                 for (Entity ricettaIngrediente : ricettaIngredienteDAO.readByIdRicetta(r.getId()).values())
                     ingredienti.add((RicettaIngrediente) ricettaIngrediente);
-                    r.setIngrediente(ingredienti);
+                    r.setIngredienti(ingredienti);
 
                 List<Commento> commenti = commentoDAO.getCommentoByRecipe(Integer.parseInt(params.get("id")));
                 r.setCommenti(commenti);
@@ -319,7 +319,7 @@ public class RicettaDAO implements IDAO {
                 List<RicettaIngrediente> ingredienti = new ArrayList<>();
                 for (Entity ricettaIngrediente : ricettaIngredienteDAO.readByIdRicetta(r.getId()).values())
                 ingredienti.add((RicettaIngrediente) ricettaIngrediente);
-                r.setIngrediente(ingredienti);
+                r.setIngredienti(ingredienti);
               
 
                 List<Commento> commenti = commentoDAO.getCommentoByRecipe(Integer.parseInt(params.get("id")));
@@ -375,7 +375,7 @@ public class RicettaDAO implements IDAO {
         List<RicettaIngrediente> ingredienti = new ArrayList<>();
         for (Entity ricettaIngrediente : ricettaIngredienteDAO.readByIdRicetta(r.getId()).values())
         ingredienti.add((RicettaIngrediente) ricettaIngrediente);
-        r.setIngrediente(ingredienti);
+        r.setIngredienti(ingredienti);
       
 
         List<Commento> commenti = commentoDAO.getCommentoByRecipe(Integer.parseInt(params.get("id")));

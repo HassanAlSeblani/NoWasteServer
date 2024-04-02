@@ -11,7 +11,7 @@ public class Ricetta extends Entity {
     private int tempoPreparazione;
     private int serving;
     private String linkImmagine;
-    private List<RicettaIngrediente> ingrediente;
+    private List<RicettaIngrediente> ingredienti;
     private List<Commento> commenti;
 
     public Ricetta(int id, String nome, String istruzioni, String portata, int difficolta, int tempoPreparazione,
@@ -86,12 +86,12 @@ public class Ricetta extends Entity {
         this.linkImmagine = linkImmagine;
     }
 
-    public List<RicettaIngrediente> getIngrediente() {
-        return ingrediente;
+    public List<RicettaIngrediente> getIngredienti() {
+        return ingredienti;
     }
 
-    public void setIngrediente(List<RicettaIngrediente> ingrediente) {
-        this.ingrediente = ingrediente;
+    public void setIngredienti(List<RicettaIngrediente> ingredienti) {
+        this.ingredienti = ingredienti;
     }
 
     public List<Commento> getCommenti() {

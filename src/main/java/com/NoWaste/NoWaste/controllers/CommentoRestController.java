@@ -20,7 +20,7 @@ import com.NoWaste.NoWaste.services.LoginService;
 
 @CrossOrigin(origins = { "http://localhost:4200" })
 @RestController
-@RequestMapping("/commenti")
+@RequestMapping("api/comment")
 public class CommentoRestController {
 
     //controllare i token!!!

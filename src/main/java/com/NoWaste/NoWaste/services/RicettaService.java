@@ -87,7 +87,7 @@ public class RicettaService {
                         conta = true;
                     }
                 }
-                if (conta == false) 
+                if (conta == false)
                 {
                     ingredienteDAO.create(ingrediente.getIngrediente());
                     ingrediente.setIngrediente((Ingrediente) ingredienteDAO.readById(ingredienteDAO.lastIngrediente()));
