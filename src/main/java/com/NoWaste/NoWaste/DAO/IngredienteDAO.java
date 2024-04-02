@@ -66,7 +66,7 @@ public class IngredienteDAO implements IDAO{
                 Map<String, String> params = new HashMap<>();
                 params.put("id", rs.getInt(1)+"");
                 params.put("nome", rs.getString(2));
-                params.put("senza_glutine", rs.getBoolean(3)+"");
+                params.put("senzaGlutine", rs.getBoolean(3)+"");
                 params.put("vegano", rs.getBoolean(4)+"");
                 params.put("vegetariano", rs.getBoolean(5)+"");
 
@@ -154,7 +154,7 @@ public class IngredienteDAO implements IDAO{
                 Map<String, String> params = new HashMap<>();
                 params.put("id", rs.getInt(1)+"");
                 params.put("nome", rs.getString(2));
-                params.put("senza_glutine", rs.getBoolean(3)+"");
+                params.put("senzaGlutine", rs.getBoolean(3)+"");
                 params.put("vegano", rs.getBoolean(4)+"");
                 params.put("vegetariano", rs.getBoolean(5)+"");
 
@@ -211,7 +211,7 @@ public class IngredienteDAO implements IDAO{
                 Map<String, String> params = new HashMap<>();
                 params.put("id", rs.getInt(1)+"");
                 params.put("nome", rs.getString(2));
-                params.put("senza_glutine", rs.getBoolean(3)+"");
+                params.put("senzaGlutine", rs.getBoolean(3)+"");
                 params.put("vegano", rs.getBoolean(4)+"");
                 params.put("vegetariano", rs.getBoolean(5)+"");
 

@@ -48,7 +48,8 @@ public class LoginService {
     public boolean checkLoginUtente(String token) {
         if (token != null) {
             if (!token.equalsIgnoreCase("") && token.split("-")[0].equalsIgnoreCase("USER")) {
-                return utenteDAO.readById(Integer.parseInt(token.split("-")[1])) != null;
+                Utente u = (Utente)utenteDAO.readById(Integer.parseInt(token.split("-")[1]));
+                return u != null && u.getRuolo().equalsIgnoreCase("USER");
             }
         }
         return false;
@@ -58,7 +59,8 @@ public class LoginService {
     public boolean checkLoginAdmin(String token) {
         if (token != null) {
             if (!token.equalsIgnoreCase("") && token.split("-")[0].equalsIgnoreCase("ADMIN")) {
-                return utenteDAO.readById(Integer.parseInt(token.split("-")[1])) != null;
+                Utente u = (Utente)utenteDAO.readById(Integer.parseInt(token.split("-")[1]));
+                return u != null && u.getRuolo().equalsIgnoreCase("ADMIN");
             }
         }
         return false;
