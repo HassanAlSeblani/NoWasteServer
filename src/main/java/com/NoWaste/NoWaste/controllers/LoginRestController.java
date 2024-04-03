@@ -29,7 +29,6 @@ public class LoginRestController {
 
      @PostMapping("/signin")
     public ResponseEntity singin(@RequestBody Map<String, String> body) {
-
          return loginService.findUser(body.get("username"), body.get("password"));
     }
 

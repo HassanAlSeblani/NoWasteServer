@@ -21,7 +21,7 @@ public class LoginService {
 
         if(username == null || password == null)
         {
-            return new ResponseEntity<>("username o password non trovati",HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("username o password non trovati",HttpStatus.BAD_REQUEST);
         }
         Utente u = (Utente)utenteDAO.readFromUsernameAndPassword(username, password);
         LoginStatus ls = new LoginStatus();
@@ -33,7 +33,7 @@ public class LoginService {
             }
         }
         else {
-            return new ResponseEntity<>("utente non trovato",HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("utente non trovato",HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<LoginStatus>(ls, HttpStatus.OK);
     }
