@@ -4,21 +4,36 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.NoWaste.NoWaste.DAO.UtenteDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.NoWaste.NoWaste.DAO.CommentoDAO;
 import com.NoWaste.NoWaste.entities.Commento;
 import com.NoWaste.NoWaste.entities.Entity;
+import com.NoWaste.NoWaste.entities.Utente;
 
 @Service
 public class CommentoService {
 
     @Autowired
     private CommentoDAO commentoDAO;
+    @Autowired
+    private UtenteDAO utenteDAO;
 
-    public boolean createCommento(Commento commento) {
-        return commentoDAO.create(commento);
+    public ResponseEntity<Boolean> createCommento(Commento commento) {
+        Boolean inserimento = commentoDAO.create(commento);
+        ResponseEntity<Boolean> response = null;
+        if(inserimento)
+        {
+            response = new ResponseEntity<>(true, HttpStatus.OK);
+        }
+        else {
+            response = new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return response;
     }
 
     public List<Commento> getAllCommenti() {
@@ -48,5 +63,5 @@ public class CommentoService {
     public List<Commento> getCommentiByRecipe(int recipeId) {
         return commentoDAO.getCommentoByRecipe(recipeId);
     }
-    
+
 }

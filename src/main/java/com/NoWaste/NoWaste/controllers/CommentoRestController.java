@@ -1,8 +1,12 @@
 package com.NoWaste.NoWaste.controllers;
 
+import java.lang.annotation.Repeatable;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -78,11 +82,22 @@ public class CommentoRestController {
     @GetMapping("/allComments")
     public List<Commento> getAllCommenti(@RequestHeader("token") String token) {
 
-        if (token != null) {
             if (loginService.checkLoginAdmin(token)) {
                 return commentoService.getAllCommenti();
             }
-        }
         return null;
     }
+
+    @PostMapping("/addComment")
+    public ResponseEntity<Boolean> createComment(@RequestHeader("token") String token, @RequestBody Commento commento)
+    {
+        if (loginService.checkLoginAdmin(token)) {
+            return commentoService.createCommento(commento);
+        }
+        else
+        {
+            return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

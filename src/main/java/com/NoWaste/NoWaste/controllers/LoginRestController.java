@@ -3,6 +3,7 @@ package com.NoWaste.NoWaste.controllers;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,27 +28,15 @@ public class LoginRestController {
 
 
      @PostMapping("/signin")
-    public LoginStatus singin(@RequestBody Map<String, String> body) {
-        Utente u = (Utente) loginService.findUser(body.get("username"), body.get("password"));
-        LoginStatus ls = new LoginStatus();
-        ls.setToken ("NONE", 0);
+    public ResponseEntity singin(@RequestBody Map<String, String> body) {
 
-        if(u != null)
-        {
-            if (u.getRuolo().equalsIgnoreCase("USER")) {
-                ls.setToken("USER", u.getId());
-            } else if (u.getRuolo().equalsIgnoreCase("ADMIN")) {
-                ls.setToken("ADMIN", u.getId());
-            }
-        }
-        return ls;
+         return loginService.findUser(body.get("username"), body.get("password"));
     }
 
 // Da riguardare per migliorare le chiamate nei controllers
-       @GetMapping("/registerUser")
+       @PostMapping("/registerUser")
     public ResponseEntity<Boolean> registerUser(@RequestBody Utente utente) {
-        boolean registrato = loginService.registerUser(utente);
-        return ResponseEntity.ok(registrato);
+        return loginService.registerUser(utente);
     }
 
     @GetMapping("/checkLogin")

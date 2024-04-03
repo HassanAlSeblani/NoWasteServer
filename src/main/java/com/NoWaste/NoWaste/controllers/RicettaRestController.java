@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,8 @@ import com.NoWaste.NoWaste.DTO.LoginStatus;
 import com.NoWaste.NoWaste.entities.Ricetta;
 import com.NoWaste.NoWaste.services.LoginService;
 import com.NoWaste.NoWaste.services.RicettaService;
+
+import org.springframework.http.ResponseEntity;
 
      //cercare immagini esistenti per ricette
 
@@ -59,11 +62,12 @@ public class RicettaRestController {
      */
 
     @GetMapping("/recipeById")
-    public Ricetta recipeById(@RequestHeader String token, @RequestParam("id") int id) {
+    public ResponseEntity recipeById(@RequestHeader String token, @RequestParam("id") int id) {
         if (loginService.checkLogin(token))
             return ricettaService.findRecipeById(id);
 
-        return null;
+        else
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
     }
 
 

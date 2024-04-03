@@ -184,7 +184,7 @@ public class UtenteDAO implements IDAO{
     }
 
     public Entity readFromUsernameAndPassword (String username, String password) {
-        String query = "SELECT * FROM utenti WHERE username LIKE ? AND `password` LIKE ?";
+        String query = "SELECT * FROM utenti WHERE username = ? AND `password` = ?";
         PreparedStatement ps = null;
         ResultSet rs = null;
         Entity e = null;
@@ -205,6 +205,33 @@ public class UtenteDAO implements IDAO{
 
                 e = context.getBean(Utente.class, params);
             }       
+        } catch (SQLException exc) {
+            System.out.println("Errore nella select in UtenteDAO" + exc.getMessage());
+        }
+        return e;
+    }
+
+    public Entity findFromUsername (String username) {
+        String query = "SELECT * FROM utenti WHERE username = ?";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Entity e = null;
+        try {
+
+            ps = database.getConnection().prepareStatement(query);
+            ps.setString(1, username);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                Map <String, String> params = new HashMap<>();
+                params.put("id", rs.getInt(1)+"");
+                params.put("nome", rs.getString(2));
+                params.put("cognome", rs.getString(3));
+                params.put("username", rs.getString(4));
+                params.put("password", rs.getString(5));
+                params.put("ruolo", rs.getString(6));
+
+                e = context.getBean(Utente.class, params);
+            }
         } catch (SQLException exc) {
             System.out.println("Errore nella select in UtenteDAO" + exc.getMessage());
         }

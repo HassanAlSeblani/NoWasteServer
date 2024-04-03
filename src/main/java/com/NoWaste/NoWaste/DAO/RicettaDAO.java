@@ -328,13 +328,13 @@ public class RicettaDAO implements IDAO {
             }
 
         } catch (SQLException exc) {
-            System.err.println("Errore nela query in RicettaDAO");
+            System.err.println("Errore nela query in RicettaDAO readByIngredients" + exc.getMessage());
         } finally {
             try {
                 ps.close();
                 rs.close();
             } catch (Exception exc) {
-                System.err.println("Errore chiusura prepared Statement");
+                System.err.println("Errore chiusura prepared Statement in RicettaDAO readByIngredients" + exc.getMessage());
             }
         }
         return result;

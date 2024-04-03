@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.NoWaste.NoWaste.DAO.IngredienteDAO;
@@ -14,6 +15,7 @@ import com.NoWaste.NoWaste.entities.Entity;
 import com.NoWaste.NoWaste.entities.Ingrediente;
 import com.NoWaste.NoWaste.entities.Ricetta;
 import com.NoWaste.NoWaste.entities.RicettaIngrediente;
+import org.springframework.http.ResponseEntity;
 
 @Service
 public class RicettaService {
@@ -37,8 +39,16 @@ public class RicettaService {
         return ricette;
     }
 
-    public Ricetta findRecipeById(int id) {
-        return (Ricetta) ricettaDAO.readById(id);
+    public ResponseEntity findRecipeById(int id) {
+        Ricetta r = (Ricetta)ricettaDAO.readById(id);
+        ResponseEntity response = null;
+        if(r != null){
+            response = new ResponseEntity<>(r, HttpStatus.OK);
+        }
+        else {
+            response = new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return response;
     }
 
     public List<Ricetta> findRecipeFilter(Map<String, String> body) {
@@ -68,9 +78,10 @@ public class RicettaService {
                 values.add(booleano);
             }
         }
-
-        for (Entity ricetta : ricettaDAO.readByIngredients(values).values()) {
-            ricette.add((Ricetta) ricetta);
+        if(values.size() > 0) {
+            for (Entity ricetta : ricettaDAO.readByIngredients(values).values()) {
+                ricette.add((Ricetta) ricetta);
+            }
         }
         return ricette;
     }

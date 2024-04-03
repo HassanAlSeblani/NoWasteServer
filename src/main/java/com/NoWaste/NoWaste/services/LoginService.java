@@ -1,6 +1,9 @@
 package com.NoWaste.NoWaste.services;
 
+import com.NoWaste.NoWaste.DTO.LoginStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.NoWaste.NoWaste.DAO.UtenteDAO;
@@ -14,35 +17,41 @@ public class LoginService {
     @Autowired
     private UtenteDAO utenteDAO;
 
-    public Entity findUser(String username, String password) {
-        // Validazione dei dati di input
-        if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
-            throw new IllegalArgumentException("Lo username e la password non possono essere vuoti");
+    public ResponseEntity findUser(String username, String password) {
+
+        if(username == null || password == null)
+        {
+            return new ResponseEntity<>("username o password non trovati",HttpStatus.FORBIDDEN);
         }
-
-        // Ricerca dell'utente nel database
-        Entity user = utenteDAO.readFromUsernameAndPassword(username, password);
-
-        // Gestione dell'utente non trovato
-        if (user == null) {
-            System.out.println("Utente non trovato");
+        Utente u = (Utente)utenteDAO.readFromUsernameAndPassword(username, password);
+        LoginStatus ls = new LoginStatus();
+        if(u != null) {
+            if (u.getRuolo().equalsIgnoreCase("USER")) {
+                ls.setToken("USER", u.getId());
+            } else if (u.getRuolo().equalsIgnoreCase("ADMIN")) {
+                ls.setToken("ADMIN", u.getId());
+            }
         }
-
-        return user;
-
+        else {
+            return new ResponseEntity<>("utente non trovato",HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<LoginStatus>(ls, HttpStatus.OK);
     }
 
-    public boolean registerUser(Utente utente) {
+    public ResponseEntity<Boolean> registerUser(Utente utente) {
         // Verifica se l'utente esiste già nel database
-        if (utenteDAO.readFromUsernameAndPassword(utente.getUsername(), utente.getPassword()) != null) {
-            System.out.println("L'utente esiste già");
-            return false;
+        ResponseEntity<Boolean> response =  null;
+        if (utenteDAO.findFromUsername(utente.getUsername()) != null) {
+            response = new ResponseEntity<>(false, HttpStatus.METHOD_NOT_ALLOWED);
         }
-        utente.setRuolo("user");
-        
-
+        else
+        {
+            utente.setRuolo("user");
+            boolean inserimento = utenteDAO.create(utente);
+            response = new ResponseEntity<>(inserimento, HttpStatus.OK);
+        }
         // Effettua la registrazione dell'utente nel database
-        return utenteDAO.create(utente);
+        return response;
     }
 
     public boolean checkLoginUtente(String token) {
@@ -53,7 +62,6 @@ public class LoginService {
             }
         }
         return false;
-
     }
 
     public boolean checkLoginAdmin(String token) {
