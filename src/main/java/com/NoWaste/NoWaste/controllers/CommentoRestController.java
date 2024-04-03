@@ -91,7 +91,7 @@ public class CommentoRestController {
     @PostMapping("/addComment")
     public ResponseEntity<Boolean> createComment(@RequestHeader("token") String token, @RequestBody Commento commento)
     {
-        if (loginService.checkLoginAdmin(token)) {
+        if (loginService.checkLogin(token)) {
             return commentoService.createCommento(commento);
         }
         else

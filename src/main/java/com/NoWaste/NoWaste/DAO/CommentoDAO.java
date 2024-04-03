@@ -44,10 +44,10 @@ public class CommentoDAO implements IDAO{
             ps.executeUpdate();
             
         } catch (SQLException exc) {
-          System.out.println("Errore inserimento commento");
+          System.err.println("Errore inserimento commento in create CommentoDAO" + exc.getMessage());
           return false;
         } catch (ClassCastException exc) {
-            System.out.println("Errore tipo dato erraro in commentoDAO");
+            System.err.println("Errore tipo dato erraro in create commentoDAO" + exc.getMessage());
             return false;
         } finally {
             try {
