@@ -417,5 +417,27 @@ public class RicettaDAO implements IDAO {
         return id;
     }
 
+    public List<String> getAllPortate()
+    {
+        String query = "SELECT DISTINCT portata FROM ricette;";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<String> portate = new ArrayList<>();
+        try{
+            ps = database.getConnection().prepareStatement(query);
+            rs = ps.executeQuery();
+            while(rs.next())
+            {
+                if(rs.getString(1) != null)
+                    portate.add(rs.getString(1));
+            }
+        }
+        catch(SQLException exc)
+        {
+            System.err.println("Errore nella select in getAllRicette() RicettaDAO" + exc.getMessage());
+        }
+
+        return portate;
+    }
 
 }

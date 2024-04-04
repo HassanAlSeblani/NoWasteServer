@@ -163,4 +163,12 @@ public class RicettaRestController {
 
         return false;
     }
+
+    @GetMapping("allPortate")
+    public List<String> getAllPortate(@RequestHeader String token) {
+        if (loginService.checkLogin(token))
+            return ricettaService.getPortate();
+
+        return new ArrayList<>();
+    }
 }

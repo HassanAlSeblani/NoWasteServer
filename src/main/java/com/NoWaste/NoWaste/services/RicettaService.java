@@ -120,4 +120,16 @@ public class RicettaService {
         return ricettaDAO.delete(id);
     }
 
+    public List<String> getPortate()
+    {
+        return ricettaDAO.getAllPortate();
+//        List<String> portate = new ArrayList<>();
+//        for(String portata : ricettaDAO.getAllPortate())
+//        {
+//            if(portata != null)
+//                portate.add()
+//        }
+    }
+
+
 }
