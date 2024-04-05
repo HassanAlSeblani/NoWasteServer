@@ -24,13 +24,20 @@ public class CommentoService {
     private UtenteDAO utenteDAO;
 
     public ResponseEntity<Boolean> createCommento(Commento commento) {
-        Boolean inserimento = commentoDAO.create(commento);
+
         ResponseEntity<Boolean> response = null;
-        if(inserimento)
+
+        if(commento.getPunteggio() > 0 && commento.getPunteggio() < 6 && commento.getCommento() != null)
         {
-            response = new ResponseEntity<>(true, HttpStatus.OK);
+            Boolean inserimento = commentoDAO.create(commento);
+            if (inserimento) {
+                response = new ResponseEntity<>(true, HttpStatus.OK);
+            } else {
+                response = new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
         }
-        else {
+        else
+        {
             response = new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return response;
